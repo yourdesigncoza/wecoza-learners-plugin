@@ -16,19 +16,72 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Generate HTML table rows for learners data
+ *
+ * @param array $learners Array of learner objects
+ * @return string HTML string of table rows
+ */
+if (!function_exists('generate_learner_table_rows')) {
+    function generate_learner_table_rows($learners) {
+        $rows = '';
+        foreach ($learners as $learner) {
+            $buttons = sprintf(
+                '<div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn bg-discovery-subtle view-details" data-id="%s">View</button>
+                    <a href="%s" class="btn bg-warning-subtle">Edit</a>
+                    <button class="btn btn-sm bg-danger-subtle delete-learner-btn" data-id="%s">Delete</button>
+                </div>',
+                esc_attr($learner->id ?? ''),
+                esc_url(home_url('/update-learners/?learner_id=' . ($learner->id ?? ''))),
+                esc_attr($learner->id ?? '')
+            );
+
+            $rows .= sprintf(
+                '<tr>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td class="text-nowrap text-center">%s</td>
+                </tr>',
+                esc_html($learner->first_name ?? ''),
+                esc_html($learner->surname ?? ''),
+                esc_html($learner->gender ?? ''),
+                esc_html($learner->race ?? ''),
+                esc_html($learner->tel_number ?? ''),
+                esc_html($learner->email_address ?? ''),
+                esc_html($learner->city_town_name ?? ''),
+                esc_html($learner->employment_status ?? ''),
+                $buttons
+            );
+        }
+        return $rows;
+    }
+}
+
+/**
  * Get learner data by ID
  * 
  * AJAX action: get_learner_data_by_id
  */
 function get_learner_data_by_id() {
     try {
+        error_log('WeCoza Learners: get_learner_data_by_id called');
+        
         // Verify nonce
         if (!check_ajax_referer('learners_nonce', 'nonce', false)) {
+            error_log('WeCoza Learners: Nonce check failed');
             throw new Exception('Security check failed');
         }
 
-        // Validate input
-        $learner_id = filter_input(INPUT_POST, 'learner_id', FILTER_VALIDATE_INT);
+        // Validate input (JavaScript sends 'id', not 'learner_id')
+        $learner_id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        error_log('WeCoza Learners: Received learner_id: ' . ($learner_id ?: 'none'));
+        
         if (!$learner_id) {
             throw new Exception('Invalid learner ID');
         }
@@ -36,9 +89,25 @@ function get_learner_data_by_id() {
         // Get learner data
         $db = new learner_DB();
         $learner = $db->get_learner_by_id($learner_id);
+        error_log('WeCoza Learners: Learner found: ' . ($learner ? 'yes' : 'no'));
 
         if ($learner) {
-            wp_send_json_success($learner);
+            // Generate HTML for modal display
+            $view_file = dirname(__DIR__) . '/views/learner-detail-modal.php';
+            error_log('WeCoza Learners: View file path: ' . $view_file);
+            error_log('WeCoza Learners: View file exists: ' . (file_exists($view_file) ? 'yes' : 'no'));
+            
+            ob_start();
+            if (file_exists($view_file)) {
+                include $view_file;
+            } else {
+                echo '<p>Error: View template not found</p>';
+            }
+            $html = ob_get_clean();
+            
+            error_log('WeCoza Learners: Generated HTML length: ' . strlen($html));
+            
+            wp_send_json_success(['html' => $html, 'learner' => $learner]);
         } else {
             throw new Exception('Learner not found');
         }
@@ -137,18 +206,31 @@ function handle_delete_learner() {
  * AJAX action: fetch_learners_data
  */
 function fetch_learners_data() {
+    // Verify nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'learners_nonce_action')) {
+        wp_send_json_error('Security check failed.');
+        return;
+    }
+
     try {
+        error_log('WeCoza Learners: Starting fetch_learners_data');
+        
         $db = new learner_DB();
         $learners = $db->get_learners_mappings();
 
+        error_log('WeCoza Learners: Retrieved ' . count($learners) . ' learners');
+
         if (empty($learners)) {
+            error_log('WeCoza Learners: No learners found in database');
             throw new Exception('No learners found.');
         }
 
         $rows = generate_learner_table_rows($learners);
+        error_log('WeCoza Learners: Successfully generated table rows');
         wp_send_json_success($rows);
 
     } catch (Exception $e) {
+        error_log('WeCoza Learners: Error in fetch_learners_data - ' . $e->getMessage());
         wp_send_json_error($e->getMessage());
     }
 }

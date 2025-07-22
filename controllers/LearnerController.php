@@ -22,14 +22,12 @@ class LearnerController {
         add_action('init', [$this, 'init']);
         
         // Register AJAX handlers
-        add_action('wp_ajax_get_learner_data_by_id', [$this, 'handleGetLearnerDataById']);
+        // Note: get_learner_data_by_id is handled in ajax/learners-ajax-handlers.php to avoid conflicts
         add_action('wp_ajax_update_learner', [$this, 'handleUpdateLearner']);
         add_action('wp_ajax_delete_learner', [$this, 'handleDeleteLearner']);
-        add_action('wp_ajax_fetch_learners_dropdown_data', [$this, 'handleFetchDropdownData']);
         add_action('wp_ajax_delete_learner_portfolio', [$this, 'handleDeleteLearnerPortfolio']);
         
-        // Allow non-logged in users for some operations (if needed)
-        add_action('wp_ajax_nopriv_fetch_learners_dropdown_data', [$this, 'handleFetchDropdownData']);
+        // Note: fetch_learners_dropdown_data is handled in ajax/learners-ajax-handlers.php to avoid conflicts
     }
 
     /**
@@ -101,7 +99,7 @@ class LearnerController {
             } else {
                 require_once dirname(__DIR__) . '/database/learners-db.php';
             }
-            $learner_db = new learner_DB();
+            $learner_db = new \learner_DB();
             $learners = $learner_db->get_all_learners($atts['limit']);
             
             ob_start();
@@ -188,7 +186,7 @@ class LearnerController {
             } else {
                 require_once dirname(__DIR__) . '/database/learners-db.php';
             }
-            $learner_db = new learner_DB();
+            $learner_db = new \learner_DB();
             $learner = $learner_db->get_learner_by_id($learner_id);
             
             if ($learner) {
@@ -235,7 +233,7 @@ class LearnerController {
             } else {
                 require_once dirname(__DIR__) . '/database/learners-db.php';
             }
-            $learner_db = new learner_DB();
+            $learner_db = new \learner_DB();
             
             $data = [
                 'locations' => $learner_db->get_locations(),

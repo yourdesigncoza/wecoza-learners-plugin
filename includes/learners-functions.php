@@ -71,32 +71,9 @@ if (function_exists('enqueue_learners_assets')) {
 
 
 /**
- * Register all AJAX handlers for learner functionality
- *
- * @since 1.0.0
- * @return void
+ * NOTE: AJAX handler registration moved to ajax/learners-ajax-handlers.php
+ * This duplicate registration has been removed to prevent conflicts.
  */
-if (!function_exists('register_learners_ajax_handlers')) {
-    function register_learners_ajax_handlers() {
-    // Array of AJAX actions and their corresponding functions
-    $ajax_handlers = array(
-        'get_learner_data_by_id' => 'get_learner_data_by_id',
-        'update_learner' => 'update_learner',
-        'delete_learner' => 'handle_delete_learner'
-    );
-
-    // Register each AJAX handler for both logged-in and non-logged-in users
-    foreach ($ajax_handlers as $action => $function) {
-        add_action("wp_ajax_{$action}", $function);
-        add_action("wp_ajax_nopriv_{$action}", $function);
-    }
-    } // End register_learners_ajax_handlers function
-} // End function_exists check
-
-// Register AJAX handlers if function exists
-if (function_exists('register_learners_ajax_handlers')) {
-    add_action('init', 'register_learners_ajax_handlers');
-}
 
 /**
  * Handle learner deletion via AJAX
@@ -185,35 +162,9 @@ if (function_exists('handle_portfolio_deletion')) {
 
 
 /**
- * Fetch and return learners data for display
- *
- * @since 1.0.0
- * @return void
+ * NOTE: fetch_learners_data AJAX handler is now registered in ajax/learners-ajax-handlers.php
+ * This duplicate registration has been removed to prevent conflicts.
  */
-if (!function_exists('fetch_learners_data')) {
-    function fetch_learners_data() {
-    try {
-        $db = new learner_DB();
-        $learners = $db->get_learners_mappings();
-
-        if (empty($learners)) {
-            throw new Exception('No learners found.');
-        }
-
-        $rows = generate_learner_table_rows($learners);
-        wp_send_json_success($rows);
-
-    } catch (Exception $e) {
-        wp_send_json_error($e->getMessage());
-    }
-    } // End fetch_learners_data function
-} // End function_exists check
-
-// Register AJAX handlers if function exists
-if (function_exists('fetch_learners_data')) {
-    add_action('wp_ajax_fetch_learners_data', 'fetch_learners_data');
-    add_action('wp_ajax_nopriv_fetch_learners_data', 'fetch_learners_data');
-}
 
 /**
  * Generate HTML table rows for learners data
@@ -324,11 +275,7 @@ if (!function_exists('fetch_learners_dropdown_data')) {
     } // End fetch_learners_dropdown_data function
 } // End function_exists check
 
-// Register AJAX handlers only if functions exist
-if (function_exists('fetch_learners_dropdown_data')) {
-    add_action('wp_ajax_fetch_learners_dropdown_data', 'fetch_learners_dropdown_data');
-    add_action('wp_ajax_nopriv_fetch_learners_dropdown_data', 'fetch_learners_dropdown_data');
-}
+// Note: fetch_learners_dropdown_data AJAX registration moved to ajax/learners-ajax-handlers.php to prevent conflicts
 
 // Plugin version doesn't need to include component files
 // require_once WECOZA_CHILD_DIR . '/assets/learners/components/learner-detail.php';

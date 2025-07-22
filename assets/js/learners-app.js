@@ -102,7 +102,7 @@ $('#editLearnerForm').on('submit', function(e) {
     var formData = $(this).serializeArray();
     var data = {
         action: 'update_learner_data',
-        nonce: window.learners_nonce.nonce,  // Use correct nonce
+        nonce: WeCozaLearners.nonce,  // Use correct nonce
     };
 
     // Convert form data to object
@@ -113,7 +113,7 @@ $('#editLearnerForm').on('submit', function(e) {
     console.log('Submitting data:', data);
 
     $.ajax({
-        url: window.learners_nonce.ajax_url,  // Correct URL for AJAX
+        url: WeCozaLearners.ajax_url,  // Correct URL for AJAX
         type: 'POST',
         data: data,
         success: function(response) {
@@ -147,11 +147,11 @@ $('#editLearnerForm').on('submit', function(e) {
             
             if (confirm('Are you sure you want to delete this learner?')) {
                 $.ajax({
-                    url: learners_nonce.ajax_url,
+                    url: WeCozaLearners.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'delete_learner',
-                        nonce: learners_nonce.nonce,
+                        nonce: WeCozaLearners.nonce,
                         id: learnerId
                     },
                     beforeSend: function() {
@@ -469,11 +469,11 @@ jQuery(document).ready(function($) {
         
         if (confirm('Are you sure you want to delete this portfolio file?')) {
             $.ajax({
-                url: learners_nonce.ajax_url,
+                url: WeCozaLearners.ajax_url,
                 type: 'POST',
                 data: {
                     action: 'delete_learner_portfolio',
-                    nonce: learners_nonce.nonce,
+                    nonce: WeCozaLearners.nonce,
                     portfolio_id: portfolioId,
                     learner_id: learnerId
                 },
@@ -555,32 +555,51 @@ jQuery(document).ready(function ($) {
         const modalTitle = $('#modalTitle'); // Target the modal title
         const modalContent = $('#modalContent'); // Target the modal body
 
+        console.log('View details clicked, learner ID:', rowId);
+        console.log('WeCozaLearners object:', WeCozaLearners);
+
         // Set loading state
         modalTitle.text('Loading Details...');
         modalContent.html('<div class="d-flex justify-content-center mb-4"><button type="button" class="btn btn-success ..."><i class="animate-spin fas fa-spinner"></i> &nbsp; Loading ...</button></div>');
         // Perform AJAX request
         $.ajax({
-            url: learners_nonce.ajax_url, // AJAX URL provided by WordPress
+            url: WeCozaLearners.ajax_url, // AJAX URL provided by WordPress
             method: 'POST',
             data: {
                 action: 'get_learner_data_by_id', // The WordPress AJAX action name
-                nonce: learners_nonce.nonce, // Nonce for security
+                nonce: WeCozaLearners.nonce, // Nonce for security
                 id: rowId // Pass the learner ID
             },
             success: function (response) {
+                console.log('AJAX Success Response:', response);
                 if (response.success) {
-                    // Console Log learner data returned from DB 
-                    // console.log('Raw Learner Data:', response.data.learner);
+                    console.log('Response data keys:', Object.keys(response.data || {}));
+                    console.log('HTML length:', (response.data.html || '').length);
 
                     // Directly use the returned HTML
-                    modalContent.html(response.data.html);
+                    modalContent.html(response.data.html || '<p>No HTML content received</p>');
                     modalTitle.text('Details'); // Update title
                 } else {
+                    console.log('AJAX Error:', response.data);
                     modalTitle.text('Error');
-                    modalContent.html('<p>' + response.data + '</p>');
+                    
+                    // Handle object errors properly
+                    let errorMessage = 'Unknown error';
+                    if (response.data) {
+                        if (typeof response.data === 'string') {
+                            errorMessage = response.data;
+                        } else if (response.data.message) {
+                            errorMessage = response.data.message;
+                        } else if (typeof response.data === 'object') {
+                            errorMessage = JSON.stringify(response.data);
+                        }
+                    }
+                    modalContent.html('<p>' + errorMessage + '</p>');
                 }
             },
-            error: function () {
+            error: function (xhr, status, error) {
+                console.log('AJAX Error:', {xhr: xhr, status: status, error: error});
+                console.log('Response text:', xhr.responseText);
                 modalTitle.text('Error');
                 modalContent.html('<p>Failed to load details. Please try again later.</p>');
             }
@@ -588,6 +607,16 @@ jQuery(document).ready(function ($) {
 
         // Show the modal
         $('#learnerModal').modal('show');
+        
+        // Fix accessibility issue - remove aria-hidden when modal is shown
+        $('#learnerModal').on('shown.bs.modal', function() {
+            $(this).removeAttr('aria-hidden');
+        });
+        
+        // Add aria-hidden back when modal is hidden
+        $('#learnerModal').on('hidden.bs.modal', function() {
+            $(this).attr('aria-hidden', 'true');
+        });
     });
 
 
