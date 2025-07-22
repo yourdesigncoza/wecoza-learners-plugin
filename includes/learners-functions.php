@@ -17,31 +17,22 @@
  */
 
 /**
- * Load all required learner-related files
+ * Load all required learner-related files (Plugin Version)
  *
  * @since 1.0.0
  * @return void
  */
-function load_learners_files() {
-    // Define array of required files
-    $required_files = array(
-        '/assets/learners/learners-db.php',
-        '/assets/learners/learners-capture-shortcode.php',
-        '/assets/learners/learners-diplay-shortcode.php',
-        '/assets/learners/learners-update-shortcode.php',
-    );
-
-    // Load each required file
-    foreach ($required_files as $file) {
-        $file_path = WECOZA_CHILD_DIR . $file;
-        if (file_exists($file_path)) {
-            require_once $file_path;
-        } else {
-            error_log("Required file not found: {$file_path}");
-        }
+if (!function_exists('load_learners_files_plugin')) {
+    function load_learners_files_plugin() {
+        // Note: Plugin version doesn't need to load files this way
+        // Files are loaded via the main plugin class includes() method
+        // This function exists for compatibility but does nothing
+        return true;
     }
 }
-load_learners_files();
+
+// Don't auto-load files here - they're loaded by the main plugin class
+// load_learners_files_plugin();
 
 /**
  * Enqueue necessary JavaScript and CSS files for learners functionality
@@ -49,7 +40,8 @@ load_learners_files();
  * @since 1.0.0
  * @return void
  */
-function enqueue_learners_assets() {
+if (!function_exists('enqueue_learners_assets')) {
+    function enqueue_learners_assets() {
     // Enqueue main learners JavaScript file
     wp_enqueue_script(
         'learners-app',
@@ -69,8 +61,13 @@ function enqueue_learners_assets() {
         'uploads_url' => $uploads_dir['baseurl'],
         'is_admin' => current_user_can('manage_options')
     ));
+    } // End enqueue_learners_assets function
+} // End function_exists check
+
+// Register enqueue action if function exists
+if (function_exists('enqueue_learners_assets')) {
+    add_action('wp_enqueue_scripts', 'enqueue_learners_assets');
 }
-add_action('wp_enqueue_scripts', 'enqueue_learners_assets');
 
 
 /**
@@ -79,7 +76,8 @@ add_action('wp_enqueue_scripts', 'enqueue_learners_assets');
  * @since 1.0.0
  * @return void
  */
-function register_learners_ajax_handlers() {
+if (!function_exists('register_learners_ajax_handlers')) {
+    function register_learners_ajax_handlers() {
     // Array of AJAX actions and their corresponding functions
     $ajax_handlers = array(
         'get_learner_data_by_id' => 'get_learner_data_by_id',
@@ -92,8 +90,13 @@ function register_learners_ajax_handlers() {
         add_action("wp_ajax_{$action}", $function);
         add_action("wp_ajax_nopriv_{$action}", $function);
     }
+    } // End register_learners_ajax_handlers function
+} // End function_exists check
+
+// Register AJAX handlers if function exists
+if (function_exists('register_learners_ajax_handlers')) {
+    add_action('init', 'register_learners_ajax_handlers');
 }
-add_action('init', 'register_learners_ajax_handlers');
 
 /**
  * Handle learner deletion via AJAX
@@ -101,7 +104,8 @@ add_action('init', 'register_learners_ajax_handlers');
  * @since 1.0.0
  * @return void
  */
-function handle_delete_learner() {
+if (!function_exists('handle_delete_learner')) {
+    function handle_delete_learner() {
     try {
         // Security checks
         if (!check_ajax_referer('learners_nonce', 'nonce', false)) {
@@ -129,7 +133,8 @@ function handle_delete_learner() {
         wp_send_json_error(array('message' => $e->getMessage()));
     }
     wp_die();
-}
+    } // End handle_delete_learner function
+} // End function_exists check
 
 
 /**
@@ -138,7 +143,8 @@ function handle_delete_learner() {
  * @since 1.0.0
  * @return void
  */
-function handle_portfolio_deletion() {
+if (!function_exists('handle_portfolio_deletion')) {
+    function handle_portfolio_deletion() {
     try {
         // Security checks
         if (!check_ajax_referer('learners_nonce', 'nonce', false)) {
@@ -168,8 +174,13 @@ function handle_portfolio_deletion() {
     } catch (Exception $e) {
         wp_send_json_error($e->getMessage());
     }
+    } // End handle_portfolio_deletion function
+} // End function_exists check
+
+// Register AJAX handler if function exists
+if (function_exists('handle_portfolio_deletion')) {
+    add_action('wp_ajax_delete_learner_portfolio', 'handle_portfolio_deletion');
 }
-add_action('wp_ajax_delete_learner_portfolio', 'handle_portfolio_deletion');
 
 
 
@@ -179,7 +190,8 @@ add_action('wp_ajax_delete_learner_portfolio', 'handle_portfolio_deletion');
  * @since 1.0.0
  * @return void
  */
-function fetch_learners_data() {
+if (!function_exists('fetch_learners_data')) {
+    function fetch_learners_data() {
     try {
         $db = new learner_DB();
         $learners = $db->get_learners_mappings();
@@ -194,9 +206,14 @@ function fetch_learners_data() {
     } catch (Exception $e) {
         wp_send_json_error($e->getMessage());
     }
+    } // End fetch_learners_data function
+} // End function_exists check
+
+// Register AJAX handlers if function exists
+if (function_exists('fetch_learners_data')) {
+    add_action('wp_ajax_fetch_learners_data', 'fetch_learners_data');
+    add_action('wp_ajax_nopriv_fetch_learners_data', 'fetch_learners_data');
 }
-add_action('wp_ajax_fetch_learners_data', 'fetch_learners_data');
-add_action('wp_ajax_nopriv_fetch_learners_data', 'fetch_learners_data');
 
 /**
  * Generate HTML table rows for learners data
@@ -204,7 +221,8 @@ add_action('wp_ajax_nopriv_fetch_learners_data', 'fetch_learners_data');
  * @param array $learners Array of learner objects
  * @return string HTML string of table rows
  */
-function generate_learner_table_rows($learners) {
+if (!function_exists('generate_learner_table_rows')) {
+    function generate_learner_table_rows($learners) {
     $rows = '';
     foreach ($learners as $learner) {
         $buttons = sprintf(
@@ -242,12 +260,14 @@ function generate_learner_table_rows($learners) {
         );
     }
     return $rows;
-}
+    } // End generate_learner_table_rows function
+} // End function_exists check
 
 /**
  * Fetch dropdown data needed for learners' forms and interactions.
  */
-function fetch_learners_dropdown_data() {
+if (!function_exists('fetch_learners_dropdown_data')) {
+    function fetch_learners_dropdown_data() {
     $db = new learner_DB();
 
     try {
@@ -301,9 +321,14 @@ function fetch_learners_dropdown_data() {
     } catch (Exception $e) {
         wp_send_json_error(['message' => $e->getMessage()]);
     }
-}
-add_action('wp_ajax_fetch_learners_dropdown_data', 'fetch_learners_dropdown_data');
-add_action('wp_ajax_nopriv_fetch_learners_dropdown_data', 'fetch_learners_dropdown_data');
+    } // End fetch_learners_dropdown_data function
+} // End function_exists check
 
-// Get learners detail ( View )
-require_once WECOZA_CHILD_DIR . '/assets/learners/components/learner-detail.php';
+// Register AJAX handlers only if functions exist
+if (function_exists('fetch_learners_dropdown_data')) {
+    add_action('wp_ajax_fetch_learners_dropdown_data', 'fetch_learners_dropdown_data');
+    add_action('wp_ajax_nopriv_fetch_learners_dropdown_data', 'fetch_learners_dropdown_data');
+}
+
+// Plugin version doesn't need to include component files
+// require_once WECOZA_CHILD_DIR . '/assets/learners/components/learner-detail.php';

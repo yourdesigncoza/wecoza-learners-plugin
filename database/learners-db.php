@@ -20,13 +20,27 @@
  * @subpackage Learners
  * @since 1.0.0
  */
-class learner_DB {
-    private $db;
 
-    public function __construct() {
-        $this->db = new Wecoza3_DB(); // Using the original class
-        // $this->create_table(); // Create table if it doesn't exist
-    }
+// Prevent direct access
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Include the PostgreSQL database service
+if (defined('WECOZA_LEARNERS_PLUGIN_DIR')) {
+    require_once WECOZA_LEARNERS_PLUGIN_DIR . 'database/WeCozaLearnersDB.php';
+} else {
+    // Fallback for when called outside plugin context (e.g., from test files)
+    require_once dirname(__FILE__) . '/WeCozaLearnersDB.php';
+}
+
+if (!class_exists('learner_DB')) {
+    class learner_DB {
+        private $db;
+
+        public function __construct() {
+            $this->db = WeCozaLearnersDB::getInstance();
+        }
 
 
     /**
@@ -34,7 +48,7 @@ class learner_DB {
      */
     private function supports_distinct_on() {
         try {
-            $pdo = $this->db->get_pdo();
+            $pdo = $this->db->getPdo();
             return $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql';
         } catch (Exception $e) {
             return false;
@@ -49,7 +63,7 @@ class learner_DB {
      */
     public function get_locations() {
         try {
-            $pdo = $this->db->get_pdo();
+            $pdo = $this->db->getPdo();
 
             // Get distinct cities
             $cities_query = "
@@ -119,7 +133,7 @@ class learner_DB {
     /*-----------------------------------------------*/
     public function get_qualifications() {
         try {
-            $qua = $this->db->get_pdo()->query("SELECT id, qualification FROM learner_qualifications");
+            $qua = $this->db->getPdo()->query("SELECT id, qualification FROM learner_qualifications");
             return $qua->fetchAll(\PDO::FETCH_ASSOC);
             $qua->execute();
         } catch (\PDOException $e) {
@@ -132,7 +146,7 @@ class learner_DB {
     /*-----------------------------------------------*/
     public function get_placement_level() {
         try {
-            $lev = $this->db->get_pdo()->query("SELECT placement_level_id, level FROM learner_placement_level ORDER BY level ASC");
+            $lev = $this->db->getPdo()->query("SELECT placement_level_id, level FROM learner_placement_level ORDER BY level ASC");
             return $lev->fetchAll(\PDO::FETCH_ASSOC);
             $qua->execute();
         } catch (\PDOException $e) {
@@ -143,16 +157,38 @@ class learner_DB {
 
 
     public function get_employers() {
-        $lrner = $this->db->get_pdo()->prepare("SELECT employer_id, employer_name FROM employers ORDER BY employer_name ASC");
+        $lrner = $this->db->getPdo()->prepare("SELECT employer_id, employer_name FROM employers ORDER BY employer_name ASC");
         $lrner->execute();
         return $lrner->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Get all learners with optional limit
+     */
+    public function get_all_learners($limit = null) {
+        try {
+            $sql = "SELECT id, first_name, surname, email_address, created_at FROM learners ORDER BY created_at DESC";
+            
+            if ($limit && is_numeric($limit)) {
+                $sql .= " LIMIT " . intval($limit);
+            }
+            
+            $stmt = $this->db->getPdo()->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            
+        } catch (Exception $e) {
+            error_log('WeCoza Learners Plugin: Error getting all learners: ' . $e->getMessage());
+            return [];
+        }
+    }
+
     /*------------------YDCOZA-----------------------*/
     /* Capture new learner      */
     /*-----------------------------------------------*/
     public function insert_learner($data) {
         try {
-            $pdo = $this->db->get_pdo();
+            $pdo = $this->db->getPdo();
 
             // Start transaction
             $pdo->beginTransaction();
@@ -228,7 +264,7 @@ public function get_learners_mappings() {
         return $cached_results;
     }
 
-    $db = $this->db->get_pdo();
+    $db = $this->db->getPdo();
 
 $query = "
     WITH portfolio_info AS (
@@ -315,7 +351,7 @@ $query = "
         /* location details, and employer information      */
         /*-----------------------------------------------*/
 public function get_learner_by_id($id) {
-    $db = $this->db->get_pdo();
+    $db = $this->db->getPdo();
 
     $query = "
         WITH portfolio_info AS (
@@ -407,13 +443,10 @@ public function get_learner_by_id($id) {
          * @return bool True on success, False on failure
          */
         public function update_learner($data) {
-            // error_log("Learner Update Submitted");
             try {
                 // Get PDO connection
-                $pdo = $this->db->get_pdo();
+                $pdo = $this->db->getPdo();
                 // Log the update attempt
-                // error_log("Attempting to update learner ID: " . $data['id']);
-                // error_log("Update data: " . print_r($data, true));
 
                 // Build the SQL query dynamically based on provided fields
                 $sql_parts = [];
@@ -462,8 +495,6 @@ public function get_learner_by_id($id) {
                 $sql = "UPDATE learners SET " . implode(', ', $sql_parts) . " WHERE id = :id";
 
                     // Log the final SQL query (for debugging)
-                    // error_log("Update SQL: " . $sql);
-                    // error_log("Parameters: " . print_r($params, true));
 
                 // Prepare and execute the query
                 $stmt = $pdo->prepare($sql);
@@ -472,7 +503,6 @@ public function get_learner_by_id($id) {
                 if ($result) {
                     // Clear the transient cache
                     delete_transient('learner_db_get_learners_mappings');
-                   // error_log("Successfully updated learner ID: " . $data['id']);
                     return true;
                 } else {
                     error_log("Failed to update learner ID: " . $data['id']);
@@ -499,7 +529,7 @@ public function get_learner_by_id($id) {
          */
         public function validate_learner_exists($id) {
             try {
-                $pdo = $this->db->get_pdo();
+                $pdo = $this->db->getPdo();
                 $stmt = $pdo->prepare("SELECT COUNT(*) FROM learners WHERE id = :id");
                 $stmt->execute(['id' => $id]);
 
@@ -518,13 +548,12 @@ public function get_learner_by_id($id) {
         /*-----------------------------------------------*/
         public function delete_learner($learner_id) {
             try {
-                $pdo = $this->db->get_pdo();
+                $pdo = $this->db->getPdo();
 
                 // Start transaction
                 $pdo->beginTransaction();
 
                 // Log deletion attempt
-                // error_log("Attempting to delete learner ID: " . $learner_id);
 
                 // Delete learner
                 $query = "DELETE FROM learners WHERE id = :id";
@@ -541,7 +570,6 @@ public function get_learner_by_id($id) {
                     // Clear the transient cache
                     delete_transient('learner_db_get_learners_mappings');
 
-                    // error_log("Successfully deleted learner ID: " . $learner_id);
                     return true;
                 } else {
                     $pdo->rollBack();
@@ -567,7 +595,7 @@ public function get_learner_by_id($id) {
 
     public function saveLearnerPortfolios($learner_id, $files) {
     try {
-        $pdo = $this->db->get_pdo();
+        $pdo = $this->db->getPdo();
         $upload_dir = wp_upload_dir();
         $portfolio_dir = $upload_dir['basedir'] . '/portfolios/';
         $portfolio_paths = [];
@@ -625,7 +653,6 @@ public function get_learner_by_id($id) {
             $portfolio_list = implode(', ', $portfolio_paths);
 
             // Log the update attempt
-            // error_log("Updating learner ID: " . $learner_id . " with portfolio paths: " . $portfolio_list);
 
             // Update learners table
             $update_stmt = $pdo->prepare("
@@ -667,7 +694,7 @@ public function get_learner_by_id($id) {
     // Add a helper function to verify the update
     public function verifyPortfolioUpdate($learner_id) {
         try {
-            $pdo = $this->db->get_pdo();
+            $pdo = $this->db->getPdo();
             $stmt = $pdo->prepare("
                 SELECT scanned_portfolio
                 FROM learners
@@ -677,7 +704,6 @@ public function get_learner_by_id($id) {
             $stmt->execute([':learner_id' => $learner_id]);
             $result = $stmt->fetch(PDO::FETCH_COLUMN);
 
-            // error_log("Current scanned_portfolio value for learner ID {$learner_id}: " . ($result ?: 'NULL'));
 
             return $result;
         } catch (Exception $e) {
@@ -689,7 +715,7 @@ public function get_learner_by_id($id) {
 
         // learners-db.php
         public function get_learner_portfolios($learner_id) {
-            $pdo = $this->db->get_pdo();
+            $pdo = $this->db->getPdo();
 
             $stmt = $pdo->prepare("
                 SELECT portfolio_id, file_path, upload_date
@@ -710,7 +736,7 @@ public function get_learner_by_id($id) {
 
         public function deletePortfolioFile($portfolio_id) {
             try {
-                $pdo = $this->db->get_pdo();
+                $pdo = $this->db->getPdo();
 
                 // Start transaction
                 $pdo->beginTransaction();
@@ -728,13 +754,11 @@ public function get_learner_by_id($id) {
                     $upload_dir = wp_upload_dir();
                     $file_path = $upload_dir['basedir'] . '/' . $file['file_path'];
 
-                    // error_log("Processing deletion for file: " . $file_path);
 
                     // Try to delete file if it exists
                     if (file_exists($file_path)) {
                         try {
                             unlink($file_path);
-                            // error_log("File successfully deleted");
                         } catch (Exception $e) {
                             error_log("Could not delete file: " . $e->getMessage());
                             // Continue with database updates even if file deletion fails
@@ -773,7 +797,6 @@ public function get_learner_by_id($id) {
 
                     // Commit transaction
                     $pdo->commit();
-                    // error_log("Database updates completed successfully");
                     return true;
                 }
 
@@ -789,4 +812,5 @@ public function get_learner_by_id($id) {
             }
         }
 
-}
+    } // End of learner_DB class
+} // End of class_exists check
