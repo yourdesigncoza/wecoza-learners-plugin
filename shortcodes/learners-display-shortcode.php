@@ -5,12 +5,12 @@ function wecoza_display_learners_shortcode() {
     wp_enqueue_script('bootstrap-table-js', 'https://unpkg.com/bootstrap-table@1.21.4/dist/bootstrap-table.min.js', array('jquery'), '1.21.4', true);
     
     // Enqueue necessary scripts
-    wp_enqueue_script('learners-display-script', WECOZA_CHILD_URL . '/assets/learners/js/learners-display-shortcode.js', array('jquery', 'bootstrap-table-js'), WECOZA_PLUGIN_VERSION, true);
+    wp_enqueue_script('learners-display-script', WECOZA_LEARNERS_PLUGIN_URL . 'assets/js/learners-display-shortcode.js', array('jquery', 'bootstrap-table-js'), WECOZA_PLUGIN_VERSION, true);
 
     // Localize script with necessary data
     wp_localize_script('learners-display-script', 'wecozaAjax', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
-        'nonce' => wp_create_nonce('learners-display-script_nonce')
+        'nonce' => wp_create_nonce('learners_nonce_action')
     ));
 
     // Start output buffering

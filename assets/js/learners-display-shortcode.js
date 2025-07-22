@@ -45,7 +45,7 @@ jQuery(document).ready(function($) {
 
         handleError: function(xhr, status, error) {
             const errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred while loading data.';
-            this.showAlert('error', errorMessage);
+            learnerTable.showAlert('error', errorMessage);
         },
 
         initializeTable: function() {

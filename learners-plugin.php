@@ -286,9 +286,15 @@ class WeCoza_Learners_Plugin {
         // Localize script with proper naming convention
         wp_localize_script('wecoza-learners-app', 'WeCozaLearners', array(
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('wecoza_learners'),
+            'nonce' => wp_create_nonce('learners_nonce'),
             'plugin_url' => WECOZA_LEARNERS_PLUGIN_URL,
             'uploads_url' => wp_upload_dir()['baseurl']
+        ));
+        
+        // Localize script for display shortcode
+        wp_localize_script('wecoza-learners-display', 'wecozaAjax', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('learners_nonce_action')
         ));
     }
     
