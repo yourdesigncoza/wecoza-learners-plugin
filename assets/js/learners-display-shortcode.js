@@ -11,9 +11,6 @@ jQuery(document).ready(function($) {
         },
 
         bindEvents: function() {
-            // View learner details
-            $(document).on('click', '.view-learner', this.handleViewLearner);
-            
             // Delete learner
             $(document).on('click', '.delete-learner-btn', this.handleDeleteLearner.bind(this));
             
@@ -48,12 +45,12 @@ jQuery(document).ready(function($) {
         },
 
         showLoader: function() {
-            $('#wecoza-loader-container').show();
+            $('#learners-loading').removeClass('d-none');
             $('#learners-content').hide();
         },
 
         hideLoader: function() {
-            $('#wecoza-loader-container').hide();
+            $('#learners-loading').addClass('d-none');
         },
 
         handleSuccess: function(response) {
@@ -175,10 +172,10 @@ jQuery(document).ready(function($) {
                         </td>
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2" role="group">
-                                <button class="btn btn-sm btn-outline-secondary border-0 view-details" 
-                                        data-id="${learner.id}" title="View Details">
+                                <a href="${wecozaAjax.homeUrl || ''}/view-learner/?learner_id=${learner.id}" 
+                                   class="btn btn-sm btn-outline-secondary border-0" title="View Details">
                                     <i class="bi bi-eye"></i>
-                                </button>
+                                </a>
                                 <a href="${wecozaAjax.homeUrl || ''}/update-learners/?learner_id=${learner.id}" 
                                    class="btn btn-sm btn-outline-secondary border-0" title="Edit Learner">
                                     <i class="bi bi-pencil"></i>
@@ -302,32 +299,6 @@ jQuery(document).ready(function($) {
             this.showAlert('success', 'Learners data exported successfully!');
         },
 
-        handleViewLearner: function(e) {
-            e.preventDefault();
-            const learnerId = $(this).data('id');
-            
-            $.ajax({
-                url: wecozaAjax.ajaxurl,
-                type: 'POST',
-                data: {
-                    action: 'get_learner_data_by_id',
-                    id: learnerId,
-                    nonce: wecozaAjax.nonce
-                },
-                success: function(response) {
-                    if (response.success) {
-                        $('#modalTitle').text('Learner Details');
-                        $('#modalContent').html(response.data);
-                        $('#learnerModal').modal('show');
-                    } else {
-                        learnerTable.showAlert('error', 'Failed to load learner details');
-                    }
-                },
-                error: function() {
-                    learnerTable.showAlert('error', 'An error occurred while loading learner details');
-                }
-            });
-        },
 
         handleDeleteLearner: function(e) {
             e.preventDefault();

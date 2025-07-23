@@ -123,6 +123,7 @@ class WeCoza_Learners_Plugin {
             $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'shortcodes/learners-capture-shortcode.php', 'Capture shortcode');
             $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'shortcodes/learners-display-shortcode.php', 'Display shortcode');
             $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'shortcodes/learners-update-shortcode.php', 'Update shortcode');
+            $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'shortcodes/learner-single-display-shortcode.php', 'Single learner display shortcode');
             
             // AJAX handlers
             $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'ajax/learners-ajax-handlers.php', 'AJAX handlers');
@@ -162,6 +163,7 @@ class WeCoza_Learners_Plugin {
             $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'shortcodes/learners-capture-shortcode.php', 'Capture shortcode');
             $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'shortcodes/learners-display-shortcode.php', 'Display shortcode');
             $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'shortcodes/learners-update-shortcode.php', 'Update shortcode');
+            $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'shortcodes/learner-single-display-shortcode.php', 'Single learner display shortcode');
             
             // AJAX handlers
             $this->safe_include(WECOZA_LEARNERS_PLUGIN_DIR . 'ajax/learners-ajax-handlers.php', 'AJAX handlers');

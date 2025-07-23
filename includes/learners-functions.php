@@ -47,7 +47,7 @@ if (!function_exists('enqueue_learners_assets')) {
         'learners-app',
         WECOZA_CHILD_URL . '/assets/learners/js/learners-app.js',
         array('jquery'),
-        WECOZA_PLUGIN_VERSION,
+        WECOZA_LEARNERS_VERSION,
         true
     );
 

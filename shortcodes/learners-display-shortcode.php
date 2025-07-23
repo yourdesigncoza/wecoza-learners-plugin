@@ -1,7 +1,7 @@
 <?php
 function wecoza_display_learners_shortcode() {
     // Enqueue necessary scripts (no bootstrap-table needed)
-    wp_enqueue_script('learners-display-script', WECOZA_LEARNERS_PLUGIN_URL . 'assets/js/learners-display-shortcode.js', array('jquery'), WECOZA_PLUGIN_VERSION, true);
+    wp_enqueue_script('learners-display-script', WECOZA_LEARNERS_PLUGIN_URL . 'assets/js/learners-display-shortcode.js', array('jquery'), WECOZA_LEARNERS_VERSION, true);
 
     // Localize script with necessary data
     wp_localize_script('learners-display-script', 'wecozaAjax', array(
@@ -18,11 +18,11 @@ function wecoza_display_learners_shortcode() {
     <div id="alert-container" class="alert-container"></div>
     
     <!-- Loader -->
-    <div id="wecoza-loader-container">
-        <button id="wecoza-loader-02" class="btn btn-primary mt-7" type="button">
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Loading...
-        </button>
+    <div id="learners-loading" class="d-flex justify-content-center align-items-center py-4">
+        <div class="spinner-border text-primary me-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <span class="text-muted">Loading learners...</span>
     </div>
 
     <!-- Main Content Container -->
