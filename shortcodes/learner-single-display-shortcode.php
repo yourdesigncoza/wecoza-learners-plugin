@@ -58,12 +58,12 @@ function wecoza_single_learner_display_shortcode() {
         
         <!-- Main Info Card -->
         <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-body ydcoza-mini-card-header">
                 <div class="row g-4 justify-content-between">
                     <!-- Name Card -->
                     <div class="col-sm-auto">
                         <div class="d-flex align-items-center">
-                            <div class="d-flex bg-primary-subtle rounded flex-center me-3" style="width:32px; height:32px">
+                            <div class="d-flex bg-primary-subtle rounded flex-center me-3">
                                 <i class="bi bi-person text-primary"></i>
                             </div>
                             <div>
@@ -78,7 +78,7 @@ function wecoza_single_learner_display_shortcode() {
                     <!-- ID Type Card -->
                     <div class="col-sm-auto">
                         <div class="d-flex align-items-center border-start-sm ps-sm-5">
-                            <div class="d-flex bg-info-subtle rounded flex-center me-3" style="width:32px; height:32px">
+                            <div class="d-flex bg-info-subtle rounded flex-center me-3">
                                 <i class="bi bi-credit-card-2-front text-info"></i>
                             </div>
                             <div>
@@ -93,7 +93,7 @@ function wecoza_single_learner_display_shortcode() {
                     <!-- Employment Status Card -->
                     <div class="col-sm-auto">
                         <div class="d-flex align-items-center border-start-sm ps-sm-5">
-                            <div class="d-flex bg-success-subtle rounded flex-center me-3" style="width:32px; height:32px">
+                            <div class="d-flex bg-success-subtle rounded flex-center me-3">
                                 <i class="bi bi-briefcase text-success"></i>
                             </div>
                             <div>
@@ -114,7 +114,7 @@ function wecoza_single_learner_display_shortcode() {
                     <!-- Qualification Card -->
                     <div class="col-sm-auto">
                         <div class="d-flex align-items-center border-start-sm ps-sm-5">
-                            <div class="d-flex bg-warning-subtle rounded flex-center me-3" style="width:32px; height:32px">
+                            <div class="d-flex bg-warning-subtle rounded flex-center me-3">
                                 <i class="bi bi-mortarboard text-warning"></i>
                             </div>
                             <div>
@@ -129,7 +129,7 @@ function wecoza_single_learner_display_shortcode() {
                     <!-- Contact Card -->
                     <div class="col-sm-auto">
                         <div class="d-flex align-items-center border-start-sm ps-sm-5">
-                            <div class="d-flex bg-primary-subtle rounded flex-center me-3" style="width:32px; height:32px">
+                            <div class="d-flex bg-primary-subtle rounded flex-center me-3">
                                 <i class="bi bi-telephone text-primary"></i>
                             </div>
                             <div>
