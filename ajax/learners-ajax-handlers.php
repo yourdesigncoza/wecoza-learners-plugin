@@ -27,11 +27,11 @@ if (!function_exists('generate_learner_table_rows')) {
         foreach ($learners as $learner) {
             $buttons = sprintf(
                 '<div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn bg-discovery-subtle view-details" data-id="%s">View</button>
+                    <a href="%s" class="btn bg-discovery-subtle">View</a>
                     <a href="%s" class="btn bg-warning-subtle">Edit</a>
                     <button class="btn btn-sm bg-danger-subtle delete-learner-btn" data-id="%s">Delete</button>
                 </div>',
-                esc_attr($learner->id ?? ''),
+                esc_url(home_url('/app/view-learner/?learner_id=' . ($learner->id ?? ''))),
                 esc_url(home_url('/app/update-learners/?learner_id=' . ($learner->id ?? ''))),
                 esc_attr($learner->id ?? '')
             );
@@ -63,59 +63,6 @@ if (!function_exists('generate_learner_table_rows')) {
     }
 }
 
-/**
- * Get learner data by ID
- * 
- * AJAX action: get_learner_data_by_id
- */
-function get_learner_data_by_id() {
-    try {
-        error_log('WeCoza Learners: get_learner_data_by_id called');
-        
-        // Verify nonce
-        if (!check_ajax_referer('learners_nonce', 'nonce', false)) {
-            error_log('WeCoza Learners: Nonce check failed');
-            throw new Exception('Security check failed');
-        }
-
-        // Validate input (JavaScript sends 'id', not 'learner_id')
-        $learner_id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-        error_log('WeCoza Learners: Received learner_id: ' . ($learner_id ?: 'none'));
-        
-        if (!$learner_id) {
-            throw new Exception('Invalid learner ID');
-        }
-
-        // Get learner data
-        $db = new learner_DB();
-        $learner = $db->get_learner_by_id($learner_id);
-        error_log('WeCoza Learners: Learner found: ' . ($learner ? 'yes' : 'no'));
-
-        if ($learner) {
-            // Generate HTML for modal display
-            $view_file = dirname(__DIR__) . '/views/learner-detail-modal.php';
-            error_log('WeCoza Learners: View file path: ' . $view_file);
-            error_log('WeCoza Learners: View file exists: ' . (file_exists($view_file) ? 'yes' : 'no'));
-            
-            ob_start();
-            if (file_exists($view_file)) {
-                include $view_file;
-            } else {
-                echo '<p>Error: View template not found</p>';
-            }
-            $html = ob_get_clean();
-            
-            error_log('WeCoza Learners: Generated HTML length: ' . strlen($html));
-            
-            wp_send_json_success(['html' => $html, 'learner' => $learner]);
-        } else {
-            throw new Exception('Learner not found');
-        }
-
-    } catch (Exception $e) {
-        wp_send_json_error(['message' => $e->getMessage()]);
-    }
-}
 
 /**
  * Update learner information
@@ -333,7 +280,6 @@ function handle_portfolio_deletion() {
  */
 function register_learners_ajax_handlers() {
     $ajax_actions = [
-        'get_learner_data_by_id' => 'get_learner_data_by_id',
         'update_learner' => 'update_learner',
         'delete_learner' => 'handle_delete_learner',
         'fetch_learners_data' => 'fetch_learners_data',

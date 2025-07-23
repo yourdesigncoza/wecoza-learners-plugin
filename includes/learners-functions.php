@@ -178,12 +178,12 @@ if (!function_exists('generate_learner_table_rows')) {
     foreach ($learners as $learner) {
         $buttons = sprintf(
             '<div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn bg-discovery-subtle view-details" data-id="%s">View</button>
+                <a href="%s" class="btn bg-discovery-subtle">View</a>
                 <a href="%s" class="btn bg-warning-subtle">Edit</a>
                 <button class="btn btn-sm bg-danger-subtle delete-learner-btn" data-id="%s">Delete</button>
             </div>',
-            esc_attr($learner->id ?? ''),
-            esc_url(home_url('/update-learners/?learner_id=' . ($learner->id ?? ''))),
+            esc_url(home_url('/app/view-learner/?learner_id=' . ($learner->id ?? ''))),
+            esc_url(home_url('/app/update-learners/?learner_id=' . ($learner->id ?? ''))),
             esc_attr($learner->id ?? '')
         );
 

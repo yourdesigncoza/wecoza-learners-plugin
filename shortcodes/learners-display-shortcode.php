@@ -133,21 +133,6 @@ function wecoza_display_learners_shortcode() {
         </div>
     </div>
 
-    <!-- Main Modal -->
-    <div id="learnerModal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-xxl-down">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="modalTitle">Details</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body ydcoza-compact-content" id="modalContent"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn bg-discovery-subtle btn-sm" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <?php
     return ob_get_clean();
 }

@@ -118,9 +118,9 @@ $('#editLearnerForm').on('submit', function(e) {
         data: data,
         success: function(response) {
             if (response.success) {
-                $('#editLearnerModal').modal('hide');
-                $('#learners-display-data').bootstrapTable('refresh');
                 alert('Learner updated successfully');
+                // Optionally redirect or refresh page
+                location.reload();
             } else {
                 console.error('Update failed:', response.data);
                 alert('Failed to update learner: ' + (response.data || 'Unknown error'));
@@ -501,75 +501,6 @@ jQuery(document).ready(function ($) {
             }
         });
 
-    // Get Learner view
-    $(document).on('click', '.view-details', function () {
-        const rowId = $(this).data('id'); // Get the learner ID
-        const modalTitle = $('#modalTitle'); // Target the modal title
-        const modalContent = $('#modalContent'); // Target the modal body
-
-        console.log('View details clicked, learner ID:', rowId);
-        console.log('WeCozaLearners object:', WeCozaLearners);
-
-        // Set loading state
-        modalTitle.text('Loading Details...');
-        modalContent.html('<div class="d-flex justify-content-center mb-4"><button type="button" class="btn btn-success ..."><i class="animate-spin fas fa-spinner"></i> &nbsp; Loading ...</button></div>');
-        // Perform AJAX request
-        $.ajax({
-            url: WeCozaLearners.ajax_url, // AJAX URL provided by WordPress
-            method: 'POST',
-            data: {
-                action: 'get_learner_data_by_id', // The WordPress AJAX action name
-                nonce: WeCozaLearners.nonce, // Nonce for security
-                id: rowId // Pass the learner ID
-            },
-            success: function (response) {
-                console.log('AJAX Success Response:', response);
-                if (response.success) {
-                    console.log('Response data keys:', Object.keys(response.data || {}));
-                    console.log('HTML length:', (response.data.html || '').length);
-
-                    // Directly use the returned HTML
-                    modalContent.html(response.data.html || '<p>No HTML content received</p>');
-                    modalTitle.text('Details'); // Update title
-                } else {
-                    console.log('AJAX Error:', response.data);
-                    modalTitle.text('Error');
-                    
-                    // Handle object errors properly
-                    let errorMessage = 'Unknown error';
-                    if (response.data) {
-                        if (typeof response.data === 'string') {
-                            errorMessage = response.data;
-                        } else if (response.data.message) {
-                            errorMessage = response.data.message;
-                        } else if (typeof response.data === 'object') {
-                            errorMessage = JSON.stringify(response.data);
-                        }
-                    }
-                    modalContent.html('<p>' + errorMessage + '</p>');
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log('AJAX Error:', {xhr: xhr, status: status, error: error});
-                console.log('Response text:', xhr.responseText);
-                modalTitle.text('Error');
-                modalContent.html('<p>Failed to load details. Please try again later.</p>');
-            }
-        });
-
-        // Show the modal
-        $('#learnerModal').modal('show');
-        
-        // Fix accessibility issue - remove aria-hidden when modal is shown
-        $('#learnerModal').on('shown.bs.modal', function() {
-            $(this).removeAttr('aria-hidden');
-        });
-        
-        // Add aria-hidden back when modal is hidden
-        $('#learnerModal').on('hidden.bs.modal', function() {
-            $(this).attr('aria-hidden', 'true');
-        });
-    });
 
 
 

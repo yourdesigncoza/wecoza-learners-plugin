@@ -74,7 +74,7 @@ jQuery(document).ready(function($) {
                 const cells = $(row).find('td');
                 if (cells.length > 0) {
                     this.allData.push({
-                        id: $(cells[8]).find('.view-details').data('id') || index,
+                        id: $(cells[8]).find('.delete-learner-btn').data('id') || index,
                         firstName: $(cells[0]).text().trim(),
                         surname: $(cells[1]).text().trim(),
                         gender: $(cells[2]).text().trim(),
