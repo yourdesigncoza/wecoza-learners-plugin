@@ -71,7 +71,18 @@ function wecoza_single_learner_display_shortcode() {
                             <div>
                                 <p class="fw-bold mb-1">Learner Name</p>
                                 <h5 class="fw-bolder text-nowrap">
-                                    <?php echo esc_html($learner->first_name . ' ' . $learner->surname); ?>
+                                    <?php 
+                                    $full_name = '';
+                                    if (!empty($learner->title)) {
+                                        $full_name .= $learner->title . ' ';
+                                    }
+                                    $full_name .= $learner->first_name;
+                                    if (!empty($learner->second_name)) {
+                                        $full_name .= ' ' . $learner->second_name;
+                                    }
+                                    $full_name .= ' ' . $learner->surname;
+                                    echo esc_html($full_name); 
+                                    ?>
                                 </h5>
                             </div>
                         </div>
@@ -197,7 +208,18 @@ function wecoza_single_learner_display_shortcode() {
                                             </div>
                                         </td>
                                         <td class="py-2">
-                                            <p class="fw-semibold mb-0"><?php echo esc_html($learner->first_name . ' ' . $learner->surname); ?></p>
+                                            <p class="fw-semibold mb-0"><?php 
+                                            $full_name = '';
+                                            if (!empty($learner->title)) {
+                                                $full_name .= $learner->title . ' ';
+                                            }
+                                            $full_name .= $learner->first_name;
+                                            if (!empty($learner->second_name)) {
+                                                $full_name .= ' ' . $learner->second_name;
+                                            }
+                                            $full_name .= ' ' . $learner->surname;
+                                            echo esc_html($full_name); 
+                                            ?></p>
                                             <?php if (!empty($learner->initials)): ?>
                                                 <small class="text-muted">Initials: <?php echo esc_html($learner->initials); ?></small>
                                             <?php endif; ?>

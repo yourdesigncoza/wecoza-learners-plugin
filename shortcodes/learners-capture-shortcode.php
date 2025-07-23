@@ -68,7 +68,9 @@ function wecoza_learners_form_shortcode($atts) {
         /*-----------------------------------------------*/
         // $scanned_portfolio_path = '';
         $data = [
+            'title' => sanitize_text_field($_POST['title']),
             'first_name' => sanitize_text_field($_POST['first_name']),
+            'second_name' => sanitize_text_field($_POST['second_name'] ?? ''),
             'initials' => sanitize_text_field($_POST['initials']),
             'surname' => sanitize_text_field($_POST['surname']),
             'gender' => sanitize_text_field($_POST['gender']),
@@ -164,7 +166,25 @@ function wecoza_learners_form_shortcode($atts) {
     <form id="learners-form" class="needs-validation ydcoza-compact-form" novalidate method="POST" enctype="multipart/form-data">
         <?php wp_nonce_field('submit_learners_form', 'wecoza_learners_form_nonce'); ?>
         <div class="row">
-            <div class="col-md-4">
+            <h6 class="mb-2">Personal Info.</h6>
+            <div class="col-md-2">
+                <!-- Title -->
+                <div class="mb-1">
+                    <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                    <select id="title" name="title" class="form-select form-select-sm" required>
+                        <option value="">Select</option>
+                        <option value="Mr">Mr</option>
+                        <option value="Mrs">Mrs</option>
+                        <option value="Ms">Ms</option>
+                        <option value="Miss">Miss</option>
+                        <option value="Dr">Dr</option>
+                        <option value="Prof">Prof</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a title.</div>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <!-- First Name -->
                 <div class="mb-1">
                     <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
@@ -173,16 +193,15 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="valid-feedback">Looks good!</div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <!-- Initials -->
+            <div class="col-md-3">
+                <!-- Second Name -->
                 <div class="mb-1">
-                    <label for="initials" class="form-label">Initials <span class="text-danger">*</span></label>
-                    <input type="text" id="initials" name="initials" class="form-control form-control-sm" required>
-                    <div class="invalid-feedback">Please provide initials.</div>
-                    <div class="valid-feedback">Looks good!</div>
+                    <label for="second_name" class="form-label">Second Name</label>
+                    <input type="text" id="second_name" name="second_name" class="form-control form-control-sm">
+                    <div class="invalid-feedback">Please provide a valid second name.</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <!-- Surname -->
                 <div class="mb-1">
                     <label for="surname" class="form-label">Surname <span class="text-danger">*</span></label>
@@ -193,7 +212,17 @@ function wecoza_learners_form_shortcode($atts) {
             </div>
         </div> <!-- ./row -->
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-2">
+                <!-- Initials -->
+                <div class="mb-1">
+                    <label for="initials" class="form-label">Initials <span class="text-danger">*</span></label>
+                    <input type="text" id="initials" name="initials" class="form-control form-control-sm" required readonly>
+                    <div class="form-text">Generated from first & second name</div>
+                    <div class="invalid-feedback">Please provide initials.</div>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <!-- Telephone Number -->
                 <div class="mb-1">
                     <label for="tel_number" class="form-label">Telephone Number <span class="text-danger">*</span></label>
@@ -202,7 +231,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="valid-feedback">Looks good!</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <!-- Alternative Telephone Number -->
                 <div class="mb-1">
                     <label for="alternative_tel_number" class="form-label">Alternative Telephone Number</label>
@@ -210,7 +239,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="invalid-feedback">Please provide a valid alternative telephone number.</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <!-- Email Address -->
                 <div class="mb-1">
                     <label for="email_address" class="form-label">Email Address <span class="text-danger">*</span></label>
@@ -223,7 +252,8 @@ function wecoza_learners_form_shortcode($atts) {
         </div> <!-- ./row -->
         <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
-            <div class="col-md-3">
+            <h6 class="mb-2">ID, Race & Gender</h6>
+            <div class="col-md-2">
                 <!-- Radio buttons for ID or Passport selection -->
                 <div class="mb-1">
                     <label class="form-label">Identification Type <span class="text-danger">*</span></label>
@@ -295,7 +325,7 @@ function wecoza_learners_form_shortcode($atts) {
         </div>
         <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <!-- Address Line 1 -->
                 <div class="mb-1">
                     <label for="address_line_1" class="form-label">Address Line 1 <span class="text-danger">*</span></label>
@@ -304,7 +334,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="valid-feedback">Looks good!</div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <!-- Address Line 2 -->
                 <div class="mb-1">
                     <label for="address_line_2" class="form-label">Address Line 2</label>
@@ -315,7 +345,7 @@ function wecoza_learners_form_shortcode($atts) {
         </div>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <!-- City/Town (Foreign Key) -->
                 <div class="mb-1">
                     <label for="city_town_id" class="form-label">City/Town <span class="text-danger">*</span></label>
@@ -326,7 +356,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="valid-feedback">Looks good!</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <!-- Province/Region (Foreign Key) -->
                 <div class="mb-1">
                     <label for="province_region_id" class="form-label">Province/Region <span class="text-danger">*</span></label>
@@ -337,7 +367,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="valid-feedback">Looks good!</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <!-- Postal Code -->
                 <div class="mb-1">
                     <label for="postal_code" class="form-label">Postal Code <span class="text-danger">*</span></label>
@@ -349,7 +379,7 @@ function wecoza_learners_form_shortcode($atts) {
         </div>
         <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="mb-1">
                     <label for="highest_qualification" class="form-label">Highest Qualification <span class="text-danger">*</span></label>
                     <select id="highest_qualification" name="highest_qualification" class="form-select form-select-sm">
@@ -358,7 +388,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select a Qualification.</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <!-- Disability Status -->
                 <div class="mb-1">
                     <label for="disability_status" class="form-label">Disability Status <span class="text-danger">*</span></label>
@@ -370,7 +400,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="invalid-feedback">Please provide your disability status.</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <!-- Scanned Portfolio Upload -->
                 <div class="mb-1">
                     <label for="scanned_portfolio" class="form-label">Assesment Report (PDF only)</label>
@@ -536,6 +566,8 @@ function wecoza_learners_form_shortcode($atts) {
                 });
                 $('#sponsor_container').append(newSponsor);
             });
+
+            // Note: Initials generation is now handled globally by learners-app.js
 
         });
     </script>

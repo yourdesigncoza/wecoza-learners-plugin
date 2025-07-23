@@ -67,7 +67,9 @@ function wecoza_learners_update_form_shortcode($atts) {
         // Sanitize and prepare form inputs
         $data = [
             'id' => $learner_id,
+            'title' => sanitize_text_field($_POST['title']),
             'first_name' => sanitize_text_field($_POST['first_name']),
+            'second_name' => sanitize_text_field($_POST['second_name'] ?? ''),
             'initials' => sanitize_text_field($_POST['initials']),
             'surname' => sanitize_text_field($_POST['surname']),
             'gender' => sanitize_text_field($_POST['gender']),
@@ -179,7 +181,24 @@ function wecoza_learners_update_form_shortcode($atts) {
         <?php wp_nonce_field('submit_learners_update_form', 'wecoza_learners_update_form_nonce'); ?>
         <input type="hidden" name="learner_id" value="<?php echo esc_attr($learner_id); ?>">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <!-- Title -->
+                <div class="mb-1">
+                    <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                    <select id="title" name="title" class="form-select form-select-sm" required>
+                        <option value="">Select</option>
+                        <option value="Mr" <?php echo ($learner->title ?? '') === 'Mr' ? 'selected' : ''; ?>>Mr</option>
+                        <option value="Mrs" <?php echo ($learner->title ?? '') === 'Mrs' ? 'selected' : ''; ?>>Mrs</option>
+                        <option value="Ms" <?php echo ($learner->title ?? '') === 'Ms' ? 'selected' : ''; ?>>Ms</option>
+                        <option value="Miss" <?php echo ($learner->title ?? '') === 'Miss' ? 'selected' : ''; ?>>Miss</option>
+                        <option value="Dr" <?php echo ($learner->title ?? '') === 'Dr' ? 'selected' : ''; ?>>Dr</option>
+                        <option value="Prof" <?php echo ($learner->title ?? '') === 'Prof' ? 'selected' : ''; ?>>Prof</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a title.</div>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+            </div>
+            <div class="col-md-2">
                 <!-- Personal Information Section -->
                 <div class="mb-1">
                     <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
@@ -188,11 +207,20 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please provide a first name.</div>
                 </div>
             </div>
+            <div class="col-md-2">
+                <div class="mb-1">
+                    <label for="second_name" class="form-label">Second Name</label>
+                    <input type="text" id="second_name" name="second_name" class="form-control form-control-sm" 
+                           value="<?php echo esc_attr($learner->second_name ?? ''); ?>">
+                    <div class="invalid-feedback">Please provide a valid second name.</div>
+                </div>
+            </div>
             <div class="col-md-3">
                 <div class="mb-1">
                     <label for="initials" class="form-label">Initials <span class="text-danger">*</span></label>
-                    <input type="text" id="initials" name="initials" class="form-control form-control-sm" required 
+                    <input type="text" id="initials" name="initials" class="form-control form-control-sm" required readonly
                            value="<?php echo esc_attr($learner->initials); ?>">
+                    <div class="form-text">Auto-generated from first & second name</div>
                     <div class="invalid-feedback">Please provide initials.</div>
                 </div>
             </div>
@@ -527,6 +555,8 @@ function wecoza_learners_update_form_shortcode($atts) {
                 }, false);
             });
         })();
+
+        // Note: Initials generation is now handled globally by learners-app.js
     });
     
     document.addEventListener('DOMContentLoaded', function() {

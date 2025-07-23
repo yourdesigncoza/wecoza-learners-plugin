@@ -36,6 +36,9 @@ if (!function_exists('generate_learner_table_rows')) {
                 esc_attr($learner->id ?? '')
             );
 
+            // Create full name with title
+            $full_name = trim(($learner->title ?? '') . ' ' . ($learner->first_name ?? '') . ' ' . ($learner->surname ?? ''));
+            
             $rows .= sprintf(
                 '<tr>
                     <td>%s</td>
@@ -48,7 +51,7 @@ if (!function_exists('generate_learner_table_rows')) {
                     <td>%s</td>
                     <td class="text-nowrap text-center">%s</td>
                 </tr>',
-                esc_html($learner->first_name ?? ''),
+                esc_html($full_name),
                 esc_html($learner->surname ?? ''),
                 esc_html($learner->gender ?? ''),
                 esc_html($learner->race ?? ''),
@@ -79,7 +82,7 @@ function update_learner() {
         // Collect and validate data
         $data = [];
         $fields = [
-            'id', 'first_name', 'initials', 'surname', 'gender', 'race',
+            'id', 'title', 'first_name', 'second_name', 'initials', 'surname', 'gender', 'race',
             'sa_id_no', 'passport_number', 'tel_number', 'alternative_tel_number',
             'email_address', 'address_line_1', 'address_line_2', 'city_town_id',
             'province_region_id', 'postal_code', 'highest_qualification',

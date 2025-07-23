@@ -167,7 +167,7 @@ if (!class_exists('learner_DB')) {
      */
     public function get_all_learners($limit = null) {
         try {
-            $sql = "SELECT id, first_name, surname, email_address, created_at FROM learners ORDER BY created_at DESC";
+            $sql = "SELECT id, title, first_name, surname, email_address, created_at FROM learners ORDER BY created_at DESC";
             
             if ($limit && is_numeric($limit)) {
                 $sql .= " LIMIT " . intval($limit);
@@ -205,7 +205,7 @@ if (!class_exists('learner_DB')) {
             // Prepare and execute the insert query
             $stmt = $pdo->prepare("
                 INSERT INTO learners (
-                    first_name, initials, surname, gender, race,
+                    title, first_name, second_name, initials, surname, gender, race,
                     sa_id_no, passport_number, tel_number, alternative_tel_number,
                     email_address, address_line_1, address_line_2, city_town_id,
                     province_region_id, postal_code, highest_qualification,
@@ -213,7 +213,7 @@ if (!class_exists('learner_DB')) {
                     employment_status, employer_id, disability_status, scanned_portfolio,
                     created_at, updated_at
                 ) VALUES (
-                    :first_name, :initials, :surname, :gender, :race,
+                    :title, :first_name, :second_name, :initials, :surname, :gender, :race,
                     :sa_id_no, :passport_number, :tel_number, :alternative_tel_number,
                     :email_address, :address_line_1, :address_line_2, :city_town_id,
                     :province_region_id, :postal_code, :highest_qualification,
@@ -464,7 +464,9 @@ public function get_learner_by_id($id) {
 
                 // Map the form fields to database columns
                 $field_mappings = [
+                    'title' => 'title',
                     'first_name' => 'first_name',
+                    'second_name' => 'second_name',
                     'initials' => 'initials',
                     'surname' => 'surname',
                     'gender' => 'gender',

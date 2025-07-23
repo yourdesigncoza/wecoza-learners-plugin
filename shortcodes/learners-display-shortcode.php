@@ -84,7 +84,7 @@ function wecoza_display_learners_shortcode() {
                                     <i class="bi bi-hash ms-1"></i>
                                 </th>
                                 <th scope="col" class="border-0">
-                                    First Name
+                                    Full Name
                                     <i class="bi bi-person ms-1"></i>
                                 </th>
                                 <th scope="col" class="border-0">
