@@ -276,28 +276,16 @@ class WeCoza_Learners_Plugin {
             true
         );
         
-        $display_js_file = WECOZA_LEARNERS_PLUGIN_DIR . 'assets/js/learners-display-shortcode.js';
-        wp_enqueue_script(
-            'wecoza-learners-display',
-            WECOZA_LEARNERS_PLUGIN_URL . 'assets/js/learners-display-shortcode.js',
-            array('jquery'),
-            file_exists($display_js_file) ? filemtime($display_js_file) : WECOZA_LEARNERS_VERSION,
-            true
-        );
         
         // Localize script with proper naming convention
         wp_localize_script('wecoza-learners-app', 'WeCozaLearners', array(
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('learners_nonce'),
+            'nonce' => wp_create_nonce('learners_nonce_action'),
             'plugin_url' => WECOZA_LEARNERS_PLUGIN_URL,
-            'uploads_url' => wp_upload_dir()['baseurl']
+            'uploads_url' => wp_upload_dir()['baseurl'],
+            'home_url' => home_url()
         ));
         
-        // Localize script for display shortcode
-        wp_localize_script('wecoza-learners-display', 'wecozaAjax', array(
-            'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('learners_nonce_action')
-        ));
     }
     
     /**

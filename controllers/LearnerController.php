@@ -24,7 +24,7 @@ class LearnerController {
         // Register AJAX handlers
         // Note: get_learner_data_by_id is handled in ajax/learners-ajax-handlers.php to avoid conflicts
         add_action('wp_ajax_update_learner', [$this, 'handleUpdateLearner']);
-        add_action('wp_ajax_delete_learner', [$this, 'handleDeleteLearner']);
+        // Note: delete_learner is handled in ajax/learners-ajax-handlers.php to avoid conflicts
         add_action('wp_ajax_delete_learner_portfolio', [$this, 'handleDeleteLearnerPortfolio']);
         
         // Note: fetch_learners_dropdown_data is handled in ajax/learners-ajax-handlers.php to avoid conflicts

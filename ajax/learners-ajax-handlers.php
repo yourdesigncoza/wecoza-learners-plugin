@@ -175,7 +175,7 @@ function update_learner() {
 function handle_delete_learner() {
     try {
         // Security checks
-        if (!check_ajax_referer('learners_nonce', 'nonce', false)) {
+        if (!wp_verify_nonce($_POST['nonce'], 'learners_nonce_action')) {
             throw new Exception('Security check failed');
         }
 

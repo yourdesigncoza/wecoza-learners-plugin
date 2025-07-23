@@ -134,54 +134,6 @@ $('#editLearnerForm').on('submit', function(e) {
 });
 
 
-    /*------------------YDCOZA-----------------------*/
-    /* Handle Delete Button Click                     */
-    /* Prompts for confirmation and deletes the       */
-    /* selected learner via AJAX. Refreshes the table */
-    /* on success.                                    */
-    /*-----------------------------------------------*/
-     // Delete button click handler
-        $(document).on('click', '.delete-learner-btn', function() {
-            var $button = $(this);
-            var learnerId = $button.data('id');
-            
-            if (confirm('Are you sure you want to delete this learner?')) {
-                $.ajax({
-                    url: WeCozaLearners.ajax_url,
-                    type: 'POST',
-                    data: {
-                        action: 'delete_learner',
-                        nonce: WeCozaLearners.nonce,
-                        id: learnerId
-                    },
-                    beforeSend: function() {
-                        // Optionally disable button while processing
-                        $button.prop('disabled', true);
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            // Refresh the table
-                            alert('Learner deleted successfully');
-                            setTimeout(() => { 
-                                $('#learners-display-data').bootstrapTable('refresh');
-                            }, 500);
-                            
-                        } else {
-                            alert(response.data || 'Failed to delete learner.');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Delete error:', error);
-                        console.error('Server response:', xhr.responseText);
-                        alert('Failed to delete learner. Please try again.');
-                    },
-                    complete: function() {
-                        // Re-enable button
-                        $button.prop('disabled', false);
-                    }
-                });
-            }
-        });
 
 
 
@@ -483,7 +435,7 @@ jQuery(document).ready(function($) {
                             $(this).remove();
                             // Show success message
                             const alert = `
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <div class="alert alert-subtle-success alert-dismissible fade show" role="alert">
                                     Portfolio file deleted successfully.
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>`;
@@ -492,7 +444,7 @@ jQuery(document).ready(function($) {
                     } else {
                         // Show error message
                         const alert = `
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="alert alert-subtle-danger alert-dismissible fade show" role="alert">
                                 Failed to delete portfolio file: ${response.data}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>`;
@@ -502,7 +454,7 @@ jQuery(document).ready(function($) {
                 error: function() {
                     // Show error message
                     const alert = `
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="alert alert-subtle-danger alert-dismissible fade show" role="alert">
                             An error occurred while deleting the file.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>`;
@@ -622,5 +574,97 @@ jQuery(document).ready(function ($) {
 
 
 
+
+    /*------------------YDCOZA-----------------------*/
+    /* Universal Delete Learner Handler               */
+    /* Handles delete buttons across all contexts     */ 
+    /* (single pages, tables, modals) with proper     */
+    /* redirect logic based on context                */
+    /*-----------------------------------------------*/
+    $(document).on('click', '.delete-learner-btn', function(e) {
+        e.preventDefault();
+        
+        const $button = $(this);
+        const learnerId = $button.data('id');
+        const isTableContext = $button.closest('#learners-table-body').length > 0;
+        const isSinglePageContext = $button.closest('.wecoza-single-learner-display').length > 0;
+        
+        if (confirm('Are you sure you want to delete this learner? This action cannot be undone.')) {
+            const originalButtonText = $button.html();
+            
+            $.ajax({
+                url: WeCozaLearners.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'delete_learner',
+                    id: learnerId,
+                    nonce: WeCozaLearners.nonce
+                },
+                beforeSend: function() {
+                    $button.prop('disabled', true).html('<i class="bi bi-hourglass-split me-1"></i>Deleting...');
+                },
+                success: function(response) {
+                    if (response.success) {
+                        if (isSinglePageContext) {
+                            // Single page context - show success and redirect
+                            showAlert('success', 'Learner deleted successfully. Redirecting...');
+                            setTimeout(function() {
+                                window.location.href = WeCozaLearners.home_url + '/display-learners/';
+                            }, 2000);
+                        } else if (isTableContext) {
+                            // Table context - remove row and update display
+                            const row = $button.closest('tr');
+                            row.fadeOut(300, function() {
+                                $(this).remove();
+                                showAlert('success', 'Learner deleted successfully');
+                                // Trigger refresh if learnerTable exists
+                                if (typeof window.learnerTable !== 'undefined' && window.learnerTable.fetchData) {
+                                    setTimeout(() => window.learnerTable.fetchData(), 500);
+                                }
+                            });
+                        } else {
+                            // Generic context - show success and potentially refresh
+                            showAlert('success', 'Learner deleted successfully');
+                            setTimeout(() => location.reload(), 1500);
+                        }
+                    } else {
+                        showAlert('error', response.data.message || 'Failed to delete learner');
+                        $button.prop('disabled', false).html(originalButtonText);
+                    }
+                },
+                error: function() {
+                    showAlert('error', 'An error occurred while deleting the learner');
+                    $button.prop('disabled', false).html(originalButtonText);
+                }
+            });
+        }
+    });
+
+    // Universal alert function
+    function showAlert(type, message) {
+        const alertClass = type === 'success' ? 'alert-subtle-success' : 'alert-subtle-danger';
+        const alertHtml = `
+            <div class="alert ${alertClass} alert-dismissible fade show mb-3" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        
+        // Try different alert container locations
+        if ($('#alert-container').length) {
+            $('#alert-container').html(alertHtml);
+        } else if ($('.wecoza-single-learner-display > .d-flex').length) {
+            $('.wecoza-single-learner-display > .d-flex').after(alertHtml);
+        } else {
+            $('body').prepend('<div class="container mt-3">' + alertHtml + '</div>');
+        }
+        
+        // Auto-dismiss after 5 seconds for error messages
+        if (type !== 'success') {
+            setTimeout(() => {
+                $('.alert').fadeOut();
+            }, 5000);
+        }
+    }
 
 }); // End jQuery(document).ready(function($)

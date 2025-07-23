@@ -11,8 +11,7 @@ jQuery(document).ready(function($) {
         },
 
         bindEvents: function() {
-            // Delete learner
-            $(document).on('click', '.delete-learner-btn', this.handleDeleteLearner.bind(this));
+            // Note: Delete learner functionality is now handled globally in learners-app.js
             
             // Search functionality
             $('#learners-search').on('keyup', this.handleSearch.bind(this));
@@ -300,42 +299,6 @@ jQuery(document).ready(function($) {
         },
 
 
-        handleDeleteLearner: function(e) {
-            e.preventDefault();
-            const learnerId = $(e.currentTarget).data('id');
-            const row = $(e.currentTarget).closest('tr');
-            
-            if (confirm('Are you sure you want to delete this learner?')) {
-                $.ajax({
-                    url: wecozaAjax.ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'delete_learner',
-                        id: learnerId,
-                        nonce: wecozaAjax.nonce
-                    },
-                    success: (response) => {
-                        if (response.success) {
-                            row.fadeOut(300, () => {
-                                // Remove from data arrays
-                                this.allData = this.allData.filter(l => l.id != learnerId);
-                                this.filteredData = this.filteredData.filter(l => l.id != learnerId);
-                                
-                                // Update display
-                                this.updateSummaryStats();
-                                this.displayData();
-                                this.showAlert('success', 'Learner deleted successfully');
-                            });
-                        } else {
-                            this.showAlert('error', response.data.message || 'Failed to delete learner');
-                        }
-                    },
-                    error: () => {
-                        this.showAlert('error', 'An error occurred while deleting the learner');
-                    }
-                });
-            }
-        },
 
         handleError: function(xhr, status, error) {
             const errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred while loading data.';
@@ -343,7 +306,7 @@ jQuery(document).ready(function($) {
         },
 
         showAlert: function(type, message) {
-            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const alertClass = type === 'success' ? 'alert-subtle-success' : 'alert-subtle-danger';
             const alertHtml = `
                 <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
                     ${message}
@@ -361,4 +324,7 @@ jQuery(document).ready(function($) {
 
     // Initialize the learner table
     learnerTable.init();
+    
+    // Expose learnerTable globally for universal delete handler
+    window.learnerTable = learnerTable;
 });

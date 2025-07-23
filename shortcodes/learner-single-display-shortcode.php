@@ -17,7 +17,7 @@ function wecoza_single_learner_display_shortcode() {
     $learner_id = isset($_GET['learner_id']) ? intval($_GET['learner_id']) : 0;
     
     if (!$learner_id) {
-        return '<div class="alert alert-warning">No learner ID provided.</div>';
+        return '<div class="alert alert-subtle-warning">No learner ID provided.</div>';
     }
     
     // Get learner data
@@ -25,7 +25,7 @@ function wecoza_single_learner_display_shortcode() {
     $learner = $db->get_learner_by_id($learner_id);
     
     if (!$learner) {
-        return '<div class="alert alert-danger">Learner not found.</div>';
+        return '<div class="alert alert-subtle-danger">Learner not found.</div>';
     }
     
     // Get additional data
@@ -49,7 +49,7 @@ function wecoza_single_learner_display_shortcode() {
     <div class="wecoza-single-learner-display">
         <!-- Header with Back Button and Actions -->
         <div class="d-flex justify-content-end mb-4">
-            <div class="btn-group mt-2 me-2" role="group" aria-label="Learner Actions">
+            <div class="btn-group btn-group-sm mt-2 me-2" role="group" aria-label="Learner Actions">
                 <button class="btn btn-subtle-primary back-to-learners" type="button">Back To Learners</button>
                 <button class="btn btn-subtle-success edit-learner-btn" type="button" data-id="<?php echo esc_attr($learner_id); ?>">Edit</button>
                 <button class="btn btn-subtle-danger delete-learner-btn" type="button" data-id="<?php echo esc_attr($learner_id); ?>">Delete</button>
@@ -499,7 +499,7 @@ function wecoza_single_learner_display_shortcode() {
                 <div class="px-xl-4 mb-7">
                     <div class="row mx-0">
                         <div class="col-12 py-3">
-                            <div class="alert alert-info">
+                            <div class="alert alert-subtle-primary">
                                 <i class="bi bi-info-circle me-2"></i>
                                 Current class and progress information will be displayed here when available.
                             </div>
@@ -522,13 +522,13 @@ function wecoza_single_learner_display_shortcode() {
                                             <div>
                                                 <i class="bi bi-file-pdf text-danger me-2"></i>
                                                 Portfolio <?php echo $index + 1; ?>
-                                                <?php if (!empty($portfolio->upload_date)): ?>
+                                                <?php if (!empty($portfolio['upload_date'])): ?>
                                                     <small class="text-muted ms-2">
-                                                        (Uploaded: <?php echo date('Y-m-d', strtotime($portfolio->upload_date)); ?>)
+                                                        (Uploaded: <?php echo date('Y-m-d', strtotime($portfolio['upload_date'])); ?>)
                                                     </small>
                                                 <?php endif; ?>
                                             </div>
-                                            <a href="<?php echo esc_url($uploads_url . '/' . $portfolio->file_path); ?>" 
+                                            <a href="<?php echo esc_url($uploads_url . '/' . $portfolio['file_path']); ?>" 
                                                download class="btn btn-sm btn-outline-primary">
                                                 <i class="bi bi-download me-1"></i> Download
                                             </a>
@@ -536,7 +536,7 @@ function wecoza_single_learner_display_shortcode() {
                                     <?php endforeach; ?>
                                 </div>
                             <?php else: ?>
-                                <div class="alert alert-warning">
+                                <div class="alert alert-subtle-warning">
                                     <i class="bi bi-exclamation-triangle me-2"></i>
                                     No portfolio documents uploaded yet.
                                 </div>
