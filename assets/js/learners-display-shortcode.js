@@ -75,7 +75,7 @@ jQuery(document).ready(function($) {
                 if (cells.length > 0) {
                     this.allData.push({
                         id: $(cells[8]).find('.delete-learner-btn').data('id') || index,
-                        firstName: $(cells[0]).text().trim(),
+                        fullName: $(cells[0]).text().trim(),
                         surname: $(cells[1]).text().trim(),
                         gender: $(cells[2]).text().trim(),
                         race: $(cells[3]).text().trim(),
@@ -153,7 +153,7 @@ jQuery(document).ready(function($) {
                                 #${learner.id}
                             </span>
                         </td>
-                        <td>${learner.firstName}</td>
+                        <td>${learner.fullName}</td>
                         <td>${learner.surname}</td>
                         <td>
                             <span class="badge badge-phoenix fs-10 ${learner.gender.toLowerCase() === 'male' ? 'badge-phoenix-info' : 'badge-phoenix-warning'}">
@@ -252,7 +252,7 @@ jQuery(document).ready(function($) {
                 $('#learners-search-status').hide();
             } else {
                 this.filteredData = this.allData.filter(learner => {
-                    return learner.firstName.toLowerCase().includes(searchTerm) ||
+                    return learner.fullName.toLowerCase().includes(searchTerm) ||
                            learner.surname.toLowerCase().includes(searchTerm) ||
                            learner.email.toLowerCase().includes(searchTerm) ||
                            learner.cityTown.toLowerCase().includes(searchTerm);
@@ -279,10 +279,10 @@ jQuery(document).ready(function($) {
 
         handleExport: function() {
             // Simple CSV export
-            let csv = 'First Name,Surname,Gender,Race,Tel Number,Email,City/Town,Employment Status\n';
+            let csv = 'Full Name,Surname,Gender,Race,Tel Number,Email,City/Town,Employment Status\n';
             
             this.filteredData.forEach(learner => {
-                csv += `"${learner.firstName}","${learner.surname}","${learner.gender}","${learner.race}","${learner.telNumber}","${learner.email}","${learner.cityTown}","${learner.employmentStatus}"\n`;
+                csv += `"${learner.fullName}","${learner.surname}","${learner.gender}","${learner.race}","${learner.telNumber}","${learner.email}","${learner.cityTown}","${learner.employmentStatus}"\n`;
             });
             
             const blob = new Blob([csv], { type: 'text/csv' });

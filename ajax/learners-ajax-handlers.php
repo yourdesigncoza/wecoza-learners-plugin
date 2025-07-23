@@ -37,7 +37,8 @@ if (!function_exists('generate_learner_table_rows')) {
             );
 
             // Create full name with title
-            $full_name = trim(($learner->title ?? '') . ' ' . ($learner->first_name ?? '') . ' ' . ($learner->surname ?? ''));
+            $title_with_period = !empty($learner->title) ? $learner->title . '. ' : '';
+            $full_name = trim($title_with_period . ($learner->first_name ?? '') . ' ' . ($learner->surname ?? ''));
             
             $rows .= sprintf(
                 '<tr>

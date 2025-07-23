@@ -74,7 +74,7 @@ function wecoza_single_learner_display_shortcode() {
                                     <?php 
                                     $full_name = '';
                                     if (!empty($learner->title)) {
-                                        $full_name .= $learner->title . ' ';
+                                        $full_name .= $learner->title . '. ';
                                     }
                                     $full_name .= $learner->first_name;
                                     if (!empty($learner->second_name)) {
@@ -211,7 +211,7 @@ function wecoza_single_learner_display_shortcode() {
                                             <p class="fw-semibold mb-0"><?php 
                                             $full_name = '';
                                             if (!empty($learner->title)) {
-                                                $full_name .= $learner->title . ' ';
+                                                $full_name .= $learner->title . '. ';
                                             }
                                             $full_name .= $learner->first_name;
                                             if (!empty($learner->second_name)) {
