@@ -125,9 +125,9 @@ function wecoza_learners_form_shortcode($atts) {
 
             // Insert learner using learner_DB class and get learner ID
             $learner_id = $db->insert_learner($data);
-            
+
             if ($learner_id) {
-                echo '<div class="alert alert-success alert-dismissible fade show ydcoza-notification ydcoza-auto-close" role="alert"><div class="d-flex gap-4"><span><i class="fa-solid fa-circle-check icon-success"></i></span><div>Learner Added successfully!</div></div><button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+                echo '<div class="alert alert-sublte-success alert-dismissible fade show ydcoza-notification ydcoza-auto-close" role="alert"><div class="d-flex gap-4"><span><i class="fa-solid fa-circle-check icon-success"></i></span><div>Learner Added successfully!</div></div><button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button></div>';
                 
                 // Handle file uploads if files were submitted
                 if (isset($_FILES['scanned_portfolio']) && !empty($_FILES['scanned_portfolio']['name'][0])) {
@@ -137,11 +137,11 @@ function wecoza_learners_form_shortcode($atts) {
                     $current_value = $db->verifyPortfolioUpdate($learner_id);
                     error_log("Verification result: " . ($current_value ?: 'NULL'));
                 } else {
-                        echo '<div class="alert alert-danger alert-dismissible fade show ydcoza-notification" role="alert"><button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button><div class="d-flex gap-4"><span><i class="fa-solid fa-circle-exclamation icon-danger"></i></span><div class="d-flex flex-column gap-2"><h6 class="mb-0">ERROR !</h6><p class="mb-0">Some files could not be uploaded: ' . $upload_result['message'] . '</p></div></div></div>';
+                        echo '<div class="alert alert-subtle-danger alert-dismissible fade show ydcoza-notification" role="alert"><button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button><div class="d-flex gap-4"><span><i class="fa-solid fa-circle-exclamation icon-danger"></i></span><div class="d-flex flex-column gap-2"><h6 class="mb-0">ERROR !</h6><p class="mb-0">Some files could not be uploaded: ' . $upload_result['message'] . '</p></div></div></div>';
                     }
                 }
             } else {
-                echo '<div class="alert alert-danger alert-dismissible fade show ydcoza-notification" role="alert"><button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button><div class="d-flex gap-4"><span><i class="fa-solid fa-circle-exclamation icon-danger"></i></span><div class="d-flex flex-column gap-2"><h6 class="mb-0">ERROR !</h6><p class="mb-0">There was an error inserting the learner. Please try again.</p></div></div></div>';
+                echo '<div class="alert alert-subtle-danger alert-dismissible fade show ydcoza-notification" role="alert"><button type="button" class="btn-close btn-close-sm" data-bs-dismiss="alert" aria-label="Close"></button><div class="d-flex gap-4"><span><i class="fa-solid fa-circle-exclamation icon-danger"></i></span><div class="d-flex flex-column gap-2"><h6 class="mb-0">ERROR !</h6><p class="mb-0">There was an error inserting the learner. Please try again.</p></div></div></div>';
             }
         } else {
             // Display all error messages

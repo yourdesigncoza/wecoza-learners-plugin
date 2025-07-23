@@ -23,7 +23,7 @@ function wecoza_learners_update_form_shortcode($atts) {
     
     // Validate learner ID exists
     if (!$learner_id) {
-        return '<div class="alert alert-danger">Invalid learner ID</div>';
+        return '<div class="alert alert-subtle-danger">Invalid learner ID</div>';
     }
 
     // Initialize DB and get learner data
@@ -33,7 +33,7 @@ function wecoza_learners_update_form_shortcode($atts) {
     // print_r($learner);
 
     if (!$learner) {
-        return '<div class="alert alert-danger">Learner not found</div>';
+        return '<div class="alert alert-subtle-danger">Learner not found</div>';
     }
 
             // Fetch locations, qualifications and employers for dropdowns
@@ -109,7 +109,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                     if ($upload_result['success']) {
 
                         // Show success message and redirect after a delay
-                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                        echo '<div class="alert alert-subtle-success alert-dismissible fade show" role="alert">
                             Learner updated successfully! Files have been uploaded.
                             <div class="mt-2">
                                 <small class="text-muted">Redirecting you to the learners list...</small>
@@ -125,7 +125,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                         </script>';
                         return;
                     } else {
-                        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        echo '<div class="alert alert-subtle-warning alert-dismissible fade show" role="alert">
                             Learner information updated, but some files could not be uploaded: ' . esc_html($upload_result['message']) . '
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>';
@@ -134,7 +134,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                 // For the case when no new files were uploaded:
                 } else {
                     // Show success message and redirect after a delay
-                    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    echo '<div class="alert alert-subtle-success alert-dismissible fade show" role="alert">
                         Learner information has been updated successfully!
                         <div class="mt-2">
                             <small class="text-muted">Redirecting you to the learners list...</small>
@@ -157,7 +157,7 @@ function wecoza_learners_update_form_shortcode($atts) {
     } else {
         // Display any validation error messages
         foreach ($error_messages as $message) {
-            echo '<div class="alert alert-danger">' . esc_html($message) . '</div>';
+            echo '<div class="alert alert-subtle-danger">' . esc_html($message) . '</div>';
         }
     }
 
@@ -170,7 +170,7 @@ function wecoza_learners_update_form_shortcode($atts) {
     // Display any error messages
     if (!empty($error_messages)) {
         foreach ($error_messages as $message) {
-            echo '<div class="alert alert-danger">' . esc_html($message) . '</div>';
+            echo '<div class="alert alert-subtle-danger">' . esc_html($message) . '</div>';
         }
     }
     ?>

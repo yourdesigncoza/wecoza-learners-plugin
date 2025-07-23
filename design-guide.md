@@ -124,7 +124,7 @@ Contextual alert messages with subtle styling.
 
 ```html
 <!-- Info Alert -->
-<div class="alert alert-info d-flex align-items-center">
+<div class="alert alert-subtle-info d-flex align-items-center">
     <i class="bi bi-info-circle-fill me-3 fs-4"></i>
     <div>
         <h6 class="alert-heading mb-1">No Classes Found</h6>
