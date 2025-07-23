@@ -179,7 +179,7 @@ function wecoza_learners_update_form_shortcode($atts) {
         <?php wp_nonce_field('submit_learners_update_form', 'wecoza_learners_update_form_nonce'); ?>
         <input type="hidden" name="learner_id" value="<?php echo esc_attr($learner_id); ?>">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <!-- Personal Information Section -->
                 <div class="mb-1">
                     <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
@@ -188,7 +188,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please provide a first name.</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="mb-1">
                     <label for="initials" class="form-label">Initials <span class="text-danger">*</span></label>
                     <input type="text" id="initials" name="initials" class="form-control form-control-sm" required 
@@ -196,7 +196,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please provide initials.</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="mb-1">
                     <label for="surname" class="form-label">Surname <span class="text-danger">*</span></label>
                     <input type="text" id="surname" name="surname" class="form-control form-control-sm" required 
