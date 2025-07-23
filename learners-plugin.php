@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WECOZA_LEARNERS_VERSION', '1.0.0');
+define('WECOZA_LEARNERS_VERSION', date('YmdHis')); // Dynamic timestamp version e.g., 20250723143045
 define('WECOZA_LEARNERS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WECOZA_LEARNERS_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WECOZA_LEARNERS_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -257,22 +257,22 @@ class WeCoza_Learners_Plugin {
      * Enqueue frontend scripts and styles
      */
     public function enqueue_scripts() {
-        // Enqueue CSS with filemtime versioning
+        // Enqueue CSS with timestamp versioning
         $css_file = WECOZA_LEARNERS_PLUGIN_DIR . 'assets/css/learners-style.css';
         wp_enqueue_style(
             'wecoza-learners-style',
             WECOZA_LEARNERS_PLUGIN_URL . 'assets/css/learners-style.css',
             array(),
-            file_exists($css_file) ? filemtime($css_file) : WECOZA_LEARNERS_VERSION
+            WECOZA_LEARNERS_VERSION
         );
         
-        // Enqueue JavaScript with filemtime versioning
+        // Enqueue JavaScript with timestamp versioning
         $app_js_file = WECOZA_LEARNERS_PLUGIN_DIR . 'assets/js/learners-app.js';
         wp_enqueue_script(
             'wecoza-learners-app',
             WECOZA_LEARNERS_PLUGIN_URL . 'assets/js/learners-app.js',
             array('jquery'),
-            file_exists($app_js_file) ? filemtime($app_js_file) : WECOZA_LEARNERS_VERSION,
+            WECOZA_LEARNERS_VERSION,
             true
         );
         

@@ -4,10 +4,100 @@
     // console.log('learners-app.js loaded');
 
     /*------------------YDCOZA-----------------------*/
+    /* Global Initials Generation Function           */
+    /* Auto-generates initials from first & second   */
+    /* name fields, excluding surname                */
+    /*-----------------------------------------------*/
+    function generateInitials() {
+        var firstName = $('#first_name').val().trim();
+        var secondName = $('#second_name').val().trim();
+        var initials = '';
+        
+        if (firstName) {
+            initials += firstName.charAt(0).toUpperCase();
+        }
+        if (secondName) {
+            initials += secondName.charAt(0).toUpperCase();
+        }
+        
+        $('#initials').val(initials);
+        
+        // Force trigger to override any other listeners
+        $('#initials').trigger('input');
+    }
+
+    // Initialize initials generation for any form with name fields
+    function initializeInitialsGeneration() {
+        // First, remove ANY existing event listeners that might interfere
+        $('#first_name, #second_name, #surname').off('input keyup blur change');
+        $('#initials').off('input keyup blur change');
+        
+        // Add our exclusive event listeners
+        $('#first_name, #second_name').on('input.wecoza keyup.wecoza', function() {
+            generateInitials();
+        });
+
+        // Aggressively monitor surname field and override any interference
+        $('#surname').on('input.wecoza keyup.wecoza', function() {
+            // Immediate override
+            setTimeout(function() {
+                generateInitials();
+            }, 1);
+        });
+
+        // Block external changes to initials field
+        $('#initials').on('input.wecoza', function(e) {
+            var currentValue = $(this).val();
+            
+            // Validate if this change is legitimate (only first + second name letters)
+            var firstName = $('#first_name').val().trim();
+            var secondName = $('#second_name').val().trim();
+            var expectedInitials = '';
+            if (firstName) expectedInitials += firstName.charAt(0).toUpperCase();
+            if (secondName) expectedInitials += secondName.charAt(0).toUpperCase();
+            
+            if (currentValue !== expectedInitials) {
+                setTimeout(function() {
+                    generateInitials();
+                }, 1);
+            }
+        });
+
+        // Force regeneration on page load (overrides pre-populated values)
+        setTimeout(function() {
+            generateInitials();
+        }, 100);
+        
+        // Additional aggressive regeneration
+        setTimeout(function() {
+            generateInitials();
+        }, 500);
+        
+        // Final safety net - monitor every 2 seconds and correct if needed
+        setInterval(function() {
+            var firstName = $('#first_name').val().trim();
+            var secondName = $('#second_name').val().trim();
+            var currentInitials = $('#initials').val();
+            var expectedInitials = '';
+            if (firstName) expectedInitials += firstName.charAt(0).toUpperCase();
+            if (secondName) expectedInitials += secondName.charAt(0).toUpperCase();
+            
+            if (currentInitials !== expectedInitials) {
+                generateInitials();
+            }
+        }, 2000);
+    }
+
+    /*------------------YDCOZA-----------------------*/
     /* Document ready function                       */
     /* Initializes table and modal when DOM is ready */
     /*-----------------------------------------------*/
     $(document).ready(function() {
+        // Initialize initials generation if name fields exist on the page
+        if ($('#first_name').length || $('#second_name').length) {
+            initializeInitialsGeneration();
+        }
+
         // Initialize fields on page load if a radio button is already checked
         // const checkedOption = $('input[name="id_type"]:checked');
         // if (checkedOption.length) {
@@ -51,6 +141,7 @@ function populateEditForm(learner) {
     // Personal Information
     $('#edit-learner-id').val(learner.id || '');
     $('#edit-first-name').val(learner.first_name || '');
+    $('#edit-second-name').val(learner.second_name || '');
     $('#edit-last-name').val(learner.surname || ''); // Note: using surname as per your DB structure
     $('#edit-initials').val(learner.initials || '');
 
