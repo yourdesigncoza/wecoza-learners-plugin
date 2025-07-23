@@ -1,0 +1,189 @@
+<div id="classes-content" class="">
+        <!-- Header Section -->
+
+                    <!-- Classes Table -->
+            <div class="card shadow-none border my-3" data-component-card="data-component-card">
+                <div class="card-header p-3 border-bottom">
+                    <div class="row g-3 justify-content-between align-items-center mb-3">
+                        <div class="col-12 col-md">
+                            <h4 class="text-body mb-0" data-anchor="data-anchor" id="classes-table-header">
+                                All Classes
+                                <i class="bi bi-calendar-event ms-2"></i>
+                            </h4>
+                        </div>
+                        <div class="search-box col-auto">
+                          <form class="position-relative"><input class="form-control search-input search form-control-sm" type="search" placeholder="Search" aria-label="Search">
+                            <svg class="svg-inline--fa fa-magnifying-glass search-box-icon" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="magnifying-glass" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"></path></svg><!-- <span class="fas fa-search search-box-icon"></span> Font Awesome fontawesome.com -->
+                          </form>
+                        </div>
+                        <div class="col-auto">
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="refreshClasses()">
+                                    Refresh
+                                    <i class="bi bi-arrow-clockwise ms-1"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="exportClasses()">
+                                    Export
+                                    <i class="bi bi-download ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+<!-- Summary strip -->
+                  <div class="col-12">
+                    <div class="scrollbar">
+                      <div class="row g-0 flex-nowrap">
+                        <div class="col-auto border-end pe-4">
+                          <h6 class="text-body-tertiary">Total Classes : 40 <div class="badge badge-phoenix fs-10 badge-phoenix-success">+ 11</div></h6>
+                        </div>
+                        <div class="col-auto px-4 border-end">
+                          <h6 class="text-body-tertiary">Active Classes : 37</h6>
+                        </div>
+                        <div class="col-auto px-4 border-end">
+                          <h6 class="text-body-tertiary">SETA Funded : 37 <div class="badge badge-phoenix fs-10 badge-phoenix-success">+ 5</div></h6>
+                        </div>
+                        <div class="col-auto px-4 border-end">
+                          <h6 class="text-body-tertiary">Exam Classes : 32 <div class="badge badge-phoenix fs-10 badge-phoenix-danger">+ 8</div></h6>
+                        </div>
+                        <div class="col-auto px-4">
+                          <h6 class="text-body-tertiary">Unique Clients : 12 <div class="badge badge-phoenix fs-10 badge-phoenix-success">- 2</div></h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="card-body p-4 py-2">
+                    <div class="table-responsive">
+                        <span id="classes-search-status" class="badge badge-phoenix badge-phoenix-primary mb-2" style="display: none;"></span><table id="classes-table" class="table table-hover table-sm fs-9 mb-0 overflow-hidden">
+                            <thead class="border-bottom">
+                                <tr>
+                                    <th scope="col" class="border-0 ps-4">
+                                        ID
+                                        <i class="bi bi-hash ms-1"></i>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        Client ID &amp; Name
+                                        <i class="bi bi-building ms-1"></i>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        Type
+                                        <i class="bi bi-tag ms-1"></i>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        Subject
+                                        <i class="bi bi-book ms-1"></i>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        Start Date
+                                        <i class="bi bi-calendar-date ms-1"></i>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        Agent ID &amp; Name
+                                        <i class="bi bi-person ms-1"></i>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        Exam Class
+                                        <i class="bi bi-mortarboard ms-1"></i>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        Status
+                                        <i class="bi bi-activity ms-1"></i>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        SETA
+                                        <i class="bi bi-award ms-1"></i>
+                                    </th>
+                                    <th scope="col" class="border-0 pe-4">
+                                        Actions
+                                        <i class="bi bi-gear ms-1"></i>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="">
+                                    <td class="py-2 align-middle text-center fs-8 white-space-nowrap">
+                                        <span class="badge fs-10 badge-phoenix badge-phoenix-secondary">
+                                            #50                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="fw-medium">
+                                            5 : AgriGrow Farms                                        </span>
+                                    </td>
+                                    <td>
+                                                                                <span class="badge bg-primary bg-opacity-10 text-primary">
+                                            GETC                                        </span>
+                                                                            </td>
+                                    <td>
+                                        <span class="fw-medium">
+                                            NL4                                        </span>
+                                    </td>
+                                    <td>
+                                                                                <span class="text-nowrap">
+                                            Aug 1, 2025                                        </span>
+                                                                            </td>
+                                    <td>
+                                        
+                                                                                <div class="text-nowrap">
+                                                                                        <!-- Different agents or only one agent - show detailed format -->
+                                            
+                                                                                        <div>
+                                                <strong>Initial:</strong>
+                                                8 : Zanele Z. Mthembu                                                <i class="bi bi-person-badge ms-1"></i>
+                                            </div>
+                                                                                                                                </div>
+                                                                            </td>
+                                    <td class="py-2 fs-8 white-space-nowrap">
+                                                                                <span class="badge fs-10 badge-phoenix badge-phoenix-secondary">
+                                            Not Exam
+                                            <svg class="svg-inline--fa fa-ban ms-1" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ban" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z" transform="translate(-256 -256)"></path></g></g></svg>
+                                        </span>
+                                                                            </td>
+                                    <td class="py-2 fs-8 white-space-nowrap">
+                                                                                <span class="badge badge-phoenix fs-10 badge-phoenix-success">
+                                            <span class="badge-label">Active</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check ms-1" style="height:12.8px;width:12.8px;">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </span>
+                                                                            </td>
+                                    <td class="py-2 fs-8 white-space-nowrap">
+                                                                                <span class="badge fs-10 badge-phoenix badge-phoenix-secondary">
+                                            Not SETA
+                                            <svg class="svg-inline--fa fa-ban ms-1" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ban" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" style="transform-origin: 0.5em 0.5em;"><g transform="translate(256 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2-35.5L412.5 367.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z" transform="translate(-256 -256)"></path></g></g></svg>
+                                        </span>
+                                                                            </td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2" role="group">
+                                            <a href="http://localhost/wecoza/app/display-single-class/?class_id=50" class="btn btn-sm btn-outline-secondary border-0" title="View Details">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                                                                        <a href="http://localhost/wecoza/app/new-class/?mode=update&amp;class_id=50" class="btn btn-sm btn-outline-secondary border-0" title="Edit Class">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                                                                                                                    <button type="button" class="btn btn-sm btn-outline-secondary border-0 delete-class-btn" data-class-id="50" title="Delete Class" onclick="deleteClass(50)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                                                                    </div>
+                                    </td>
+                                </tr>
+.....
+                                                            </tbody>
+                        </table>
+                    </div><div id="classes-pagination" class="d-flex justify-content-between mt-3"><span class="d-none d-sm-inline-block" data-list-info="data-list-info">
+                1 to 20 <span class="text-body-tertiary"> Items of </span>40
+            </span><nav aria-label="Classes pagination"><ul class="pagination pagination-sm"><li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">«</span>
+            </li><li class="page-item active" aria-current="page">
+                    <span class="page-link">1</span>
+                </li><li class="page-item">
+                    <a class="page-link" href="#" data-page-number="2">2</a>
+                </li><li class="page-item">
+                <a class="page-link" href="#" data-list-pagination="next" aria-label="Next">
+                    <span aria-hidden="true">»</span>
+                </a>
+            </li></ul></nav></div>
+                </div>
+            </div>
+
+            </div>
