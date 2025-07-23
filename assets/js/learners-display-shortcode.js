@@ -171,11 +171,11 @@ jQuery(document).ready(function($) {
                         </td>
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2" role="group">
-                                <a href="${wecozaAjax.homeUrl || ''}/view-learner/?learner_id=${learner.id}" 
+                                <a href="${wecozaAjax.viewLearnerUrl}/?learner_id=${learner.id}" 
                                    class="btn btn-sm btn-outline-secondary border-0" title="View Details">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <a href="${wecozaAjax.homeUrl || ''}/update-learners/?learner_id=${learner.id}" 
+                                <a href="${wecozaAjax.updateLearnerUrl}/?learner_id=${learner.id}" 
                                    class="btn btn-sm btn-outline-secondary border-0" title="Edit Learner">
                                     <i class="bi bi-pencil"></i>
                                 </a>

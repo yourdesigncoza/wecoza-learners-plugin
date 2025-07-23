@@ -283,7 +283,10 @@ class WeCoza_Learners_Plugin {
             'nonce' => wp_create_nonce('learners_nonce_action'),
             'plugin_url' => WECOZA_LEARNERS_PLUGIN_URL,
             'uploads_url' => wp_upload_dir()['baseurl'],
-            'home_url' => home_url()
+            'home_url' => home_url(),
+            'display_learners_url' => home_url('app/all-learners'),
+            'view_learner_url' => home_url('app/view-learner'),
+            'update_learner_url' => home_url('app/update-learners')
         ));
         
     }

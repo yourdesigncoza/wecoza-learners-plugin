@@ -32,7 +32,7 @@ if (!function_exists('generate_learner_table_rows')) {
                     <button class="btn btn-sm bg-danger-subtle delete-learner-btn" data-id="%s">Delete</button>
                 </div>',
                 esc_attr($learner->id ?? ''),
-                esc_url(home_url('/update-learners/?learner_id=' . ($learner->id ?? ''))),
+                esc_url(home_url('/app/update-learners/?learner_id=' . ($learner->id ?? ''))),
                 esc_attr($learner->id ?? '')
             );
 

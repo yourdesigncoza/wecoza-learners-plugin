@@ -7,6 +7,7 @@ jQuery(document).ready(function($) {
         bindEvents: function() {
             // Back to learners button
             $('.back-to-learners').on('click', this.handleBackToLearners);
+            // http://localhost/wecoza/app/all-learners/
             
             // Edit learner button
             $('.edit-learner-btn').on('click', this.handleEditLearner);
@@ -14,12 +15,12 @@ jQuery(document).ready(function($) {
         },
 
         handleBackToLearners: function() {
-            window.location.href = learnerSingleAjax.homeUrl + '/display-learners/';
+            window.location.href = learnerSingleAjax.displayLearnersUrl;
         },
 
         handleEditLearner: function() {
             const learnerId = $(this).data('id');
-            window.location.href = learnerSingleAjax.homeUrl + '/update-learners/?learner_id=' + learnerId;
+            window.location.href = learnerSingleAjax.updateLearnerUrl + '/?learner_id=' + learnerId;
         },
 
 

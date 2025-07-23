@@ -39,7 +39,9 @@ function wecoza_single_learner_display_shortcode() {
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('learners_nonce'),
         'learnerId' => $learner_id,
-        'homeUrl' => home_url()
+        'homeUrl' => home_url(),
+        'displayLearnersUrl' => home_url('app/all-learners'),
+        'updateLearnerUrl' => home_url('app/update-learners')
     ));
     
     // Start output buffering

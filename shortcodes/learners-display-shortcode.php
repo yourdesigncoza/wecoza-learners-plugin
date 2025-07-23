@@ -7,7 +7,9 @@ function wecoza_display_learners_shortcode() {
     wp_localize_script('learners-display-script', 'wecozaAjax', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('learners_nonce_action'),
-        'homeUrl' => home_url()
+        'homeUrl' => home_url(),
+        'viewLearnerUrl' => home_url('app/view-learner'),
+        'updateLearnerUrl' => home_url('app/update-learners')
     ));
 
     // Start output buffering

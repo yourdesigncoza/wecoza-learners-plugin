@@ -609,7 +609,7 @@ jQuery(document).ready(function ($) {
                             // Single page context - show success and redirect
                             showAlert('success', 'Learner deleted successfully. Redirecting...');
                             setTimeout(function() {
-                                window.location.href = WeCozaLearners.home_url + '/display-learners/';
+                                window.location.href = WeCozaLearners.display_learners_url;
                             }, 2000);
                         } else if (isTableContext) {
                             // Table context - remove row and update display
