@@ -217,7 +217,7 @@ function wecoza_learners_form_shortcode($atts) {
                 <div class="mb-1">
                     <label for="initials" class="form-label">Initials <span class="text-danger">*</span></label>
                     <input type="text" id="initials" name="initials" class="form-control form-control-sm" required readonly>
-                    <div class="form-text">Generated from first & second name</div>
+                    <div class="form-text text-muted">Generated from first & second name</div>
                     <div class="invalid-feedback">Please provide initials.</div>
                     <div class="valid-feedback">Looks good!</div>
                 </div>
@@ -257,7 +257,7 @@ function wecoza_learners_form_shortcode($atts) {
                 <!-- Radio buttons for ID or Passport selection -->
                 <div class="mb-1">
                     <label class="form-label">Identification Type <span class="text-danger">*</span></label>
-                    <div class="row">
+                    <div id="id_type_container" class="row">
                         <div class="col">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="id_type" id="sa_id_option" value="sa_id" required>
@@ -278,7 +278,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select an identification type.</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div id="id_fields_container" class="col-md-2 d-none">
                 <!-- SA ID Number (Initially Hidden) -->
                 <div id="sa_id_field" class="mb-3 d-none">
                     <label for="sa_id_no" class="form-label">SA ID Number <span class="text-danger">*</span></label>
@@ -295,7 +295,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="valid-feedback">Valid passport number!</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <!-- Race Field -->
                 <div class="mb-1">
                     <label for="race" class="form-label">Race <span class="text-danger">*</span></label>
@@ -309,7 +309,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select a race.</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
             <!-- Gender -->
                 <div class="mb-1">
                     <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
@@ -325,6 +325,7 @@ function wecoza_learners_form_shortcode($atts) {
         </div>
         <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
+            <h6 class="mb-2">Address Details</h6>
             <div class="col-md-3">
                 <!-- Address Line 1 -->
                 <div class="mb-1">
@@ -379,6 +380,7 @@ function wecoza_learners_form_shortcode($atts) {
         </div>
         <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
+            <h6 class="mb-2">Educational Details</h6>
             <div class="col-md-3">
                 <div class="mb-1">
                     <label for="highest_qualification" class="form-label">Highest Qualification <span class="text-danger">*</span></label>
@@ -388,7 +390,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select a Qualification.</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <!-- Disability Status -->
                 <div class="mb-1">
                     <label for="disability_status" class="form-label">Disability Status <span class="text-danger">*</span></label>
@@ -411,7 +413,8 @@ function wecoza_learners_form_shortcode($atts) {
         </div>
         <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
-            <div class="col-md-3">
+            <h6 class="mb-2">Assessment Details</h6>
+            <div class="col-md-2">
                 <!-- Assessment Status -->
                 <div class="mb-1">
                     <label for="assessment_status" class="form-label">Assessment Status <span class="text-danger">*</span></label>
@@ -423,8 +426,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select an assessment status.</div>
                 </div>
             </div>
-            <div class="col-md-3">
-
+            <div class="col-md-2">
                 <!--  Communication Level -->
                 <div class="mb-3 initial_communication_level d-none">
                     <label for="communication_level" class="form-label">Assessment Communication Level.<span class="text-danger">*</span></label>
@@ -434,7 +436,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select the Assesed Communication Level.</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <!-- Numeracy Level -->
                 <div class="mb-3 placement_date_outerdiv d-none">
                     <label for="numeracy_level" class="form-label">Assessment Numeracy Level.<span class="text-danger">*</span></label>
@@ -444,7 +446,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select a Placement Level.</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <!-- Placement Assessment Date (initially hidden) -->
                 <div class="mb-3 placement_date_outerdiv d-none">
                     <label for="placement_assessment_date" class="form-label">Assessment Date.<span class="text-danger">*</span></label>
@@ -468,19 +470,21 @@ function wecoza_learners_form_shortcode($atts) {
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
+            <h6 class="mb-2">Employment Details</h6>
+            <div class="col-md-2">
                 <!-- Employment Status -->
                 <div class="mb-1">
                     <label for="employment_status" class="form-label">Employment Status <span class="text-danger">*</span></label>
                     <select id="employment_status" name="employment_status" class="form-select form-select-sm" required>
-                        <option value="">Select Employment Status</option>
+                        <option value="">Employment Status</option>
                         <option value="1">Employed</option>
                         <option value="0">Unemployed</option>
                     </select>
+                    <div class="form-text text-muted">Select Employment Status</div>
                     <div class="invalid-feedback">Please select an employment status.</div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <!-- Employer (Foreign Key) - Starts hidden if Employment Status == employed dislay -->
                 <div id="employer_field" class="mb-3 d-none">
                     <label for="employer_id" class="form-label">Employer <span class="text-danger">*</span></label>
@@ -496,7 +500,7 @@ function wecoza_learners_form_shortcode($atts) {
                 <div id="sponsor_container">
                     <!-- Sponsor input groups will be appended here -->
                 </div>
-                <button type="button" class="btn btn-sm btn-discovery" id="add_sponsor_btn">+ Add Sponsor</button>
+                <button type="button" class="btn btn-subtle-primary btn-sm me-1 mb-1" id="add_sponsor_btn">+ Add Sponsor</button>
             </div>
         <!-- Sponsor Input Group Template -->
         <div id="sponsor_template" class="d-none">
@@ -505,7 +509,7 @@ function wecoza_learners_form_shortcode($atts) {
                     <option value="">Select Sponsor</option>
                     <!-- Populate dynamically -->
                 </select>
-                <button type="button" class="btn btn-sm btn-outline-danger remove_sponsor_btn">Remove</button>
+                <button type="button" class="btn btn-sm btn-subtle-danger remove_sponsor_btn">Remove</button>
                 <div class="invalid-feedback">Please select a sponsor.</div>
             </div>
         </div>

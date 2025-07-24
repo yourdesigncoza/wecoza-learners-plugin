@@ -423,7 +423,10 @@ $('#editLearnerForm').on('submit', function(e) {
             var initialPassportNumber = passportInput.val();
 
             function toggleIdFields(selectedType) {
+                const idFieldsContainer = $form.find('#id_fields_container');
+                
                 if (selectedType === 'sa_id') {
+                    idFieldsContainer.removeClass('d-none'); // Show the container
                     saIdField.removeClass('d-none');
                     passportField.addClass('d-none');
                     saIdInput.prop('required', true);
@@ -432,6 +435,7 @@ $('#editLearnerForm').on('submit', function(e) {
                         passportInput.val('').removeClass('is-valid is-invalid');
                     }
                 } else if (selectedType === 'passport') {
+                    idFieldsContainer.removeClass('d-none'); // Show the container
                     passportField.removeClass('d-none');
                     saIdField.addClass('d-none');
                     passportInput.prop('required', true);
