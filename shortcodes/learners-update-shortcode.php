@@ -536,8 +536,26 @@ function wecoza_learners_update_form_shortcode($atts) {
             </div>
 
             <!-- Sponsored By Section -->
+            <div class="col-md-3">
+                <label class="form-label">Sponsored By</label>
+                <div id="sponsor_container">
+                    <!-- Sponsor input groups will be appended here -->
+                    <!-- Existing sponsors will be loaded here if any -->
+                </div>
+                <button type="button" class="btn btn-subtle-primary btn-sm me-1 mb-1" id="add_sponsor_btn">+ Add Sponsor</button>
+            </div>
 
-
+        <!-- Sponsor Input Group Template -->
+        <div id="sponsor_template" class="d-none">
+            <div class="input-group mb-2 sponsor-group">
+                <select name="sponsors[]" class="form-select form-select-sm sponsor-select" required>
+                    <option value="">Select Sponsor</option>
+                    <!-- Populate dynamically -->
+                </select>
+                <button type="button" class="btn btn-sm btn-subtle-danger remove_sponsor_btn">Remove</button>
+                <div class="invalid-feedback">Please select a sponsor.</div>
+            </div>
+        </div>
             
         </div>
 
@@ -568,14 +586,42 @@ function wecoza_learners_update_form_shortcode($atts) {
         })();
 
         // Note: Initials generation is now handled globally by learners-app.js
+
+        // Add Sponsor Input Group functionality
+        $('#add_sponsor_btn').click(function() {
+            var newSponsor = $('#sponsor_template').clone().removeAttr('id').removeClass('d-none');
+            newSponsor.find('.remove_sponsor_btn').click(function() {
+                $(this).closest('.sponsor-group').remove();
+            });
+            $('#sponsor_container').append(newSponsor);
+            // No need to populate - template already has all sponsor options!
+        });
     });
     
+    // Global variable to store employers data for sponsors
+    var employersData = [];
+
     document.addEventListener('DOMContentLoaded', function() {
         // Fetch dropdown data via AJAX
         fetch('<?php echo admin_url('admin-ajax.php'); ?>?action=fetch_learners_dropdown_data')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    // Store employers data globally for sponsor dropdowns
+                    employersData = data.data.employers;
+
+                    // Populate the sponsor template dropdown
+                    const templateSelect = document.querySelector('#sponsor_template .sponsor-select');
+                    if (templateSelect && employersData) {
+                        // Keep the default option and add all employers
+                        employersData.forEach(function(employer) {
+                            const option = document.createElement('option');
+                            option.value = employer.id;
+                            option.textContent = employer.name;
+                            templateSelect.appendChild(option);
+                        });
+                    }
+
                     // Populate Communication Levels
                     const communicationSelect = document.getElementById('communication_level');
                     communicationSelect.innerHTML = data.data.placement_levels.communication_levels.map(level => 
