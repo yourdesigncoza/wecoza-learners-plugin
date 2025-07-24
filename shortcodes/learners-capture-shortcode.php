@@ -380,7 +380,7 @@ function wecoza_learners_form_shortcode($atts) {
         </div>
         <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
-            <h6 class="mb-2">Educational Details</h6>
+            <h6 class="mb-2">Educational & Disability Details</h6>
             <div class="col-md-3">
                 <div class="mb-1">
                     <label for="highest_qualification" class="form-label">Highest Qualification <span class="text-danger">*</span></label>
@@ -464,9 +464,6 @@ function wecoza_learners_form_shortcode($atts) {
                     <input type="date" id="placement_assessment_date" name="placement_assessment_date" class="form-control form-control-sm">
                     <div class="invalid-feedback">Please select the placement assessment date.</div>
                 </div>
-            </div>
-            <div class="col-md-4">
-<!-- &nbsp; -->
             </div>
         </div>
         <div class="row">

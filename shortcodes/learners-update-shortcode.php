@@ -181,6 +181,7 @@ function wecoza_learners_update_form_shortcode($atts) {
         <?php wp_nonce_field('submit_learners_update_form', 'wecoza_learners_update_form_nonce'); ?>
         <input type="hidden" name="learner_id" value="<?php echo esc_attr($learner_id); ?>">
         <div class="row">
+            <h6 class="mb-2">Personal Info.</h6>
             <div class="col-md-2">
                 <!-- Title -->
                 <div class="mb-1">
@@ -198,7 +199,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="valid-feedback">Looks good!</div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <!-- Personal Information Section -->
                 <div class="mb-1">
                     <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
@@ -207,21 +208,12 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please provide a first name.</div>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="mb-1">
                     <label for="second_name" class="form-label">Second Name</label>
                     <input type="text" id="second_name" name="second_name" class="form-control form-control-sm" 
                            value="<?php echo esc_attr($learner->second_name ?? ''); ?>">
                     <div class="invalid-feedback">Please provide a valid second name.</div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="mb-1">
-                    <label for="initials" class="form-label">Initials <span class="text-danger">*</span></label>
-                    <input type="text" id="initials" name="initials" class="form-control form-control-sm" required readonly
-                           value="<?php echo esc_attr($learner->initials); ?>">
-                    <div class="form-text">Auto-generated from first & second name</div>
-                    <div class="invalid-feedback">Please provide initials.</div>
                 </div>
             </div>
             <div class="col-md-3">
@@ -233,8 +225,18 @@ function wecoza_learners_update_form_shortcode($atts) {
                 </div>
             </div>
         </div>
+        <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
-            <div class="col-md-4">
+                <div class="col-md-2">
+                    <div class="mb-1">
+                        <label for="initials" class="form-label">Initials <span class="text-danger">*</span></label>
+                        <input type="text" id="initials" name="initials" class="form-control form-control-sm" required readonly
+                            value="<?php echo esc_attr($learner->initials); ?>">
+                        <div class="form-text">Auto-generated from first & second name</div>
+                        <div class="invalid-feedback">Please provide initials.</div>
+                    </div>
+                </div>
+            <div class="col-md-3">
                 <!-- Contact Information -->
                 <div class="mb-1">
                     <label for="tel_number" class="form-label">Telephone Number <span class="text-danger">*</span></label>
@@ -243,39 +245,26 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please provide a valid telephone number.</div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <!-- Race Field -->
+            <div class="col-md-3">
                 <div class="mb-1">
-                    <label for="race" class="form-label">Race <span class="text-danger">*</span></label>
-                    <select id="race" name="race" class="form-select form-select-sm" required>
-                        <option value="">Select Race</option>
-                        <?php
-                        $races = ['Black', 'White', 'Coloured', 'Indian'];
-                        foreach ($races as $race) {
-                            echo '<option value="' . esc_attr($race) . '"' . 
-                                 selected($learner->race, $race, false) . '>' . 
-                                 esc_html($race) . '</option>';
-                        }
-                        ?>
-                    </select>
-                    <div class="invalid-feedback">Please select a race.</div>
+                    <label for="alternative_tel_number" class="form-label">Alternative Telephone Number</label>
+                    <input type="text" id="alternative_tel_number" name="alternative_tel_number" class="form-control form-control-sm"
+                           value="<?php echo esc_attr($learner->alternative_tel_number); ?>">
                 </div>
             </div>
-            <div class="col-md-4">
-                <!-- Gender -->
+            <div class="col-md-3">
                 <div class="mb-1">
-                    <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
-                    <select id="gender" name="gender" class="form-select form-select-sm" required>
-                        <option value="">Select Gender</option>
-                        <option value="Male"<?php selected($learner->gender, 'Male'); ?>>Male</option>
-                        <option value="Female"<?php selected($learner->gender, 'Female'); ?>>Female</option>
-                    </select>
-                    <div class="invalid-feedback">Please select a gender.</div>
+                    <label for="email_address" class="form-label">Email Address <span class="text-danger">*</span></label>
+                    <input type="email" id="email_address" name="email_address" class="form-control form-control-sm" required
+                           value="<?php echo esc_attr($learner->email_address); ?>">
+                    <div class="invalid-feedback">Please provide a valid email address.</div>
                 </div>
             </div>
         </div>
+        <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
-            <div class="col-md-3">
+            <h6 class="mb-2">ID, Race & Gender</h6>
+            <div class="col-md-2">
                 <!-- Identification Section -->
                 <div class="mb-1">
                     <label class="form-label">Identification Type <span class="text-danger">*</span></label>
@@ -297,7 +286,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div id="sa_id_field" class="mb-3 <?php echo empty($learner->sa_id_no) ? 'd-none' : ''; ?>">
                     <label for="sa_id_no" class="form-label">SA ID Number</label>
                     <input type="text" id="sa_id_no" name="sa_id_no" class="form-control form-control-sm"
@@ -310,24 +299,42 @@ function wecoza_learners_update_form_shortcode($atts) {
                            value="<?php echo esc_attr($learner->passport_number); ?>">
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <!-- Race Field -->
                 <div class="mb-1">
-                    <label for="alternative_tel_number" class="form-label">Alternative Telephone Number</label>
-                    <input type="text" id="alternative_tel_number" name="alternative_tel_number" class="form-control form-control-sm"
-                           value="<?php echo esc_attr($learner->alternative_tel_number); ?>">
+                    <label for="race" class="form-label">Race <span class="text-danger">*</span></label>
+                    <select id="race" name="race" class="form-select form-select-sm" required>
+                        <option value="">Select Race</option>
+                        <?php
+                        $races = ['Black', 'White', 'Coloured', 'Indian'];
+                        foreach ($races as $race) {
+                            echo '<option value="' . esc_attr($race) . '"' . 
+                                 selected($learner->race, $race, false) . '>' . 
+                                 esc_html($race) . '</option>';
+                        }
+                        ?>
+                    </select>
+                    <div class="invalid-feedback">Please select a race.</div>
                 </div>
             </div>
             <div class="col-md-3">
+                <!-- Gender -->
                 <div class="mb-1">
-                    <label for="email_address" class="form-label">Email Address <span class="text-danger">*</span></label>
-                    <input type="email" id="email_address" name="email_address" class="form-control form-control-sm" required
-                           value="<?php echo esc_attr($learner->email_address); ?>">
-                    <div class="invalid-feedback">Please provide a valid email address.</div>
+                    <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
+                    <select id="gender" name="gender" class="form-select form-select-sm" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male"<?php selected($learner->gender, 'Male'); ?>>Male</option>
+                        <option value="Female"<?php selected($learner->gender, 'Female'); ?>>Female</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a gender.</div>
                 </div>
             </div>
+
         </div>
+        <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
-            <div class="col-md-6">
+            <h6 class="mb-2">Address Details</h6>
+            <div class="col-md-3">
                 <!-- Address Information -->
                 <div class="mb-1">
                     <label for="address_line_1" class="form-label">Address Line 1 <span class="text-danger">*</span></label>
@@ -336,7 +343,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please provide a valid address.</div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="mb-1">
                     <label for="address_line_2" class="form-label">Address Line 2</label>
                     <input type="text" id="address_line_2" name="address_line_2" class="form-control form-control-sm"
@@ -345,7 +352,7 @@ function wecoza_learners_update_form_shortcode($atts) {
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <!-- City/Town Dropdown -->
                 <div class="mb-1">
                     <label for="city_town_id" class="form-label">City/Town <span class="text-danger">*</span></label>
@@ -361,7 +368,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select a valid city or town.</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <!-- Province/Region Dropdown -->
                 <div class="mb-1">
                     <label for="province_region_id" class="form-label">Province/Region <span class="text-danger">*</span></label>
@@ -377,7 +384,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select a valid province or region.</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="mb-1">
                     <label for="postal_code" class="form-label">Postal Code <span class="text-danger">*</span></label>
                     <input type="text" id="postal_code" name="postal_code" class="form-control form-control-sm" required
@@ -386,10 +393,12 @@ function wecoza_learners_update_form_shortcode($atts) {
                 </div>
             </div>
         </div>
+        <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
         <div class="row">
-            <div class="col-md-4">
-        <!-- Assessment Information -->
-        <div class="mb-1">
+            <h6 class="mb-2">Educational & Disability Details</h6>
+            <div class="col-md-3">
+            <!-- Assessment Information -->
+            <div class="mb-1">
             <label for="highest_qualification" class="form-label">Highest Qualification <span class="text-danger">*</span></label>
             <select id="highest_qualification" name="highest_qualification" class="form-select form-select-sm">
                 <option value="">Select Highest Qualification</option>
@@ -401,9 +410,9 @@ function wecoza_learners_update_form_shortcode($atts) {
                 <?php endforeach; ?>
             </select>
             <div class="invalid-feedback">Please select an employer.</div>
-        </div>
             </div>
-            <div class="col-md-4">
+            </div>
+            <div class="col-md-2">
                 <!-- Disability Status -->
                 <div class="mb-1">
                     <label for="disability_status" class="form-label">Disability Status <span class="text-danger">*</span></label>
@@ -414,79 +423,9 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please provide your disability status.</div>
                 </div>
             </div>
-            <div class="col-md-4">
-                &nbsp;
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="mb-1">
-                    <label for="assessment_status" class="form-label">Assessment Status <span class="text-danger">*</span></label>
-                    <select id="assessment_status" name="assessment_status" class="form-select form-select-sm" required>
-                        <option value="">Select Assessment Status</option>
-                        <option value="Assessed" <?php selected($learner->assessment_status, 'Assessed'); ?>>Assessed</option>
-                        <option value="Not Assessed" <?php selected($learner->assessment_status, 'Not Assessed'); ?>>Not Assessed</option>
-                    </select>
-                    <div class="invalid-feedback">Please select an assessment status.</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-1 placement_date_outerdiv" id="placement_date_div" <?php echo $learner->assessment_status !== 'Assessed' ? 'style="display:none;"' : ''; ?>>
-                    <label for="placement_assessment_date" class="form-label">Placement Assessment Date <span class="text-danger">*</span></label>
-                    <input type="date" id="placement_assessment_date" name="placement_assessment_date" class="form-control form-control-sm"
-                           value="<?php echo esc_attr($learner->placement_assessment_date); ?>">
-                    <div class="invalid-feedback">Please select the placement assessment date.</div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <!-- Communication Placement Level -->
-                <div class="mb-1 placement_date_outerdiv" id="placement_level_div" <?php echo $learner->assessment_status !== 'Assessed' ? 'style="display:none;"' : ''; ?>>
-                    <label for="communication_level" class="form-label">Assessment Communication Level <span class="text-danger">*</span></label>
-                    <select id="communication_level" name="communication_level" class="form-select form-select-sm">
-                        <option value="">Loading...</option>
-                    </select>
-                    <div class="invalid-feedback">Please select a Assessment Communication Level.</div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <!-- Numeracy Placement Level -->
-                <div class="mb-1 placement_date_outerdiv" id="placement_level_div" <?php echo $learner->assessment_status !== 'Assessed' ? 'style="display:none;"' : ''; ?>>
-                    <label for="numeracy_level" class="form-label">Assessment Numeracy Level <span class="text-danger">*</span></label>
-                    <select id="numeracy_level" name="numeracy_level" class="form-select form-select-sm">
-                    <option value="">Loading...</option>
-                    </select>
-                    <div class="invalid-feedback">Please select a Assessment Communication Level.</div>
-                </div>
-            </div>
-
-        </div>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <!-- Portfolio Upload -->
                 <div class="mb-1">
-                    <label for="scanned_portfolio" class="form-label">Scanned Portfolio (PDF only)</label>
-                    <?php 
-                    if (!empty($portfolios)): ?>
-                        <div class="mb-1">
-                            <?php foreach ($portfolios as $index => $portfolio): ?>
-                                <div class="d-flex align-items-center mb-0 portfolio-item">
-                                    <span class="me-2 small" style="font-size:12px">Portfolio <?php echo $index + 1; ?></span>
-                                    <span class="text-muted me-2 small" style="font-size:12px">
-                                        (Uploaded: <?php echo date('Y-m-d', strtotime($portfolio['upload_date'])); ?>)
-                                    </span>
-                                    <button type="button"
-                                            class="delete-portfolio badge rounded-pill bg-danger"
-                                            style="padding-top:3px; padding-bottom:3px"
-                                            data-portfolio-id="<?php echo esc_attr($portfolio['portfolio_id']); ?>"
-                                            data-learner-id="<?php echo esc_attr($learner_id); ?>">
-                                        Delete
-                                    </button>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php endif; ?>
-                    
                     <div class="mt-0">
                         <label class="form-label">Add New Portfolio Files:</label>
                         <input type="file" 
@@ -499,7 +438,74 @@ function wecoza_learners_update_form_shortcode($atts) {
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                    <?php 
+                    if (!empty($portfolios)): ?>
+                        <div class="mb-1">
+                            <?php foreach ($portfolios as $index => $portfolio): ?>
+                                <div class="d-flex align-items-center mb-0 portfolio-item mt-4">
+                                    <span class="me-2 small" style="font-size:12px">Portfolio <?php echo $index + 1; ?></span>
+                                    <span class="text-muted me-2 small" style="font-size:12px">
+                                        (Uploaded: <?php echo date('Y-m-d', strtotime($portfolio['upload_date'])); ?>)
+                                    </span>
+                                    <button type="button"
+                                            class="delete-portfolio btn btn-subtle-danger"
+                                            data-portfolio-id="<?php echo esc_attr($portfolio['portfolio_id']); ?>"
+                                            data-learner-id="<?php echo esc_attr($learner_id); ?>">
+                                        Delete
+                                    </button>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+            </div>
+        </div>
+        <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
+        <div class="row">
+            <h6 class="mb-2">Assessment Details</h6>
+            <div class="col-md-2">
+                <div class="mb-1">
+                    <label for="assessment_status" class="form-label">Assessment Status <span class="text-danger">*</span></label>
+                    <select id="assessment_status" name="assessment_status" class="form-select form-select-sm" required>
+                        <option value="">Select Assessment Status</option>
+                        <option value="Assessed" <?php selected($learner->assessment_status, 'Assessed'); ?>>Assessed</option>
+                        <option value="Not Assessed" <?php selected($learner->assessment_status, 'Not Assessed'); ?>>Not Assessed</option>
+                    </select>
+                    <div class="invalid-feedback">Please select an assessment status.</div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <!-- Communication Placement Level -->
+                <div class="mb-1 placement_date_outerdiv" id="placement_level_div" <?php echo $learner->assessment_status !== 'Assessed' ? 'style="display:none;"' : ''; ?>>
+                    <label for="communication_level" class="form-label">Assessment Comm Level <span class="text-danger">*</span></label>
+                    <select id="communication_level" name="communication_level" class="form-select form-select-sm">
+                        <option value="">Loading...</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a Assessment Communication Level.</div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <!-- Numeracy Placement Level -->
+                <div class="mb-1 placement_date_outerdiv" id="placement_level_div" <?php echo $learner->assessment_status !== 'Assessed' ? 'style="display:none;"' : ''; ?>>
+                    <label for="numeracy_level" class="form-label">Assessment Num Level <span class="text-danger">*</span></label>
+                    <select id="numeracy_level" name="numeracy_level" class="form-select form-select-sm">
+                    <option value="">Loading...</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a Assessment Communication Level.</div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mb-1 placement_date_outerdiv" id="placement_date_div" <?php echo $learner->assessment_status !== 'Assessed' ? 'style="display:none;"' : ''; ?>>
+                    <label for="placement_assessment_date" class="form-label">Placement Assessment Date <span class="text-danger">*</span></label>
+                    <input type="date" id="placement_assessment_date" name="placement_assessment_date" class="form-control form-control-sm"
+                           value="<?php echo esc_attr($learner->placement_assessment_date); ?>">
+                    <div class="invalid-feedback">Please select the placement assessment date.</div>
+                </div>
+            </div>
+        </div>
+        <div class="border-top border-opacity-25 border-3 border-discovery my-5 mx-1"></div>
+        <div class="row">
+            <div class="col-md-3">
                 <!-- Employment Information -->
                 <div class="mb-1">
                     <label for="employment_status" class="form-label">Employment Status <span class="text-danger">*</span></label>
@@ -513,7 +519,7 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select an employment status.</div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div id="employer_field" class="mb-1" <?php echo !$learner->employment_status ? 'style="display:none;"' : ''; ?>>
                     <label for="employer_id" class="form-label">Employer <span class="text-danger">*</span></label>
                     <select id="employer_id" name="employer_id" class="form-select form-select-sm">
@@ -528,6 +534,11 @@ function wecoza_learners_update_form_shortcode($atts) {
                     <div class="invalid-feedback">Please select an employer.</div>
                 </div>
             </div>
+
+            <!-- Sponsored By Section -->
+
+
+            
         </div>
 
 
