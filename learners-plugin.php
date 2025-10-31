@@ -58,9 +58,9 @@ class WeCoza_Learners_Plugin {
             $this->includes_debug();
             
         } catch (Exception $e) {
-            error_log('WeCoza Learners Plugin: FATAL ERROR in constructor: ' . $e->getMessage());
-            error_log('WeCoza Learners Plugin: Error file: ' . $e->getFile());
-            error_log('WeCoza Learners Plugin: Error line: ' . $e->getLine());
+            // error_log('WeCoza Learners Plugin: FATAL ERROR in constructor: ' . $e->getMessage());
+            // error_log('WeCoza Learners Plugin: Error file: ' . $e->getFile());
+            // error_log('WeCoza Learners Plugin: Error line: ' . $e->getLine());
             // Add admin notice instead of fatal error
             add_action('admin_notices', array($this, 'show_error_notice'));
             throw $e; // Re-throw to cause plugin activation failure
@@ -101,9 +101,9 @@ class WeCoza_Learners_Plugin {
             add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
             
         } catch (Exception $e) {
-            error_log('WeCoza Learners Plugin: FATAL ERROR in init_hooks(): ' . $e->getMessage());
-            error_log('WeCoza Learners Plugin: Error file: ' . $e->getFile());
-            error_log('WeCoza Learners Plugin: Error line: ' . $e->getLine());
+            // error_log('WeCoza Learners Plugin: FATAL ERROR in init_hooks(): ' . $e->getMessage());
+            // error_log('WeCoza Learners Plugin: Error file: ' . $e->getFile());
+            // error_log('WeCoza Learners Plugin: Error line: ' . $e->getLine());
             throw $e;
         }
     }
@@ -140,7 +140,7 @@ class WeCoza_Learners_Plugin {
             }
             
         } catch (Exception $e) {
-            error_log('WeCoza Learners Plugin: Error in includes(): ' . $e->getMessage());
+            // error_log('WeCoza Learners Plugin: Error in includes(): ' . $e->getMessage());
             // Don't throw here, let plugin continue with partial functionality
         }
     }
@@ -174,9 +174,9 @@ class WeCoza_Learners_Plugin {
             }
             
         } catch (Exception $e) {
-            error_log('WeCoza Learners Plugin: FATAL ERROR in includes_debug(): ' . $e->getMessage());
-            error_log('WeCoza Learners Plugin: Error file: ' . $e->getFile());
-            error_log('WeCoza Learners Plugin: Error line: ' . $e->getLine());
+            // error_log('WeCoza Learners Plugin: FATAL ERROR in includes_debug(): ' . $e->getMessage());
+            // error_log('WeCoza Learners Plugin: Error file: ' . $e->getFile());
+            // error_log('WeCoza Learners Plugin: Error line: ' . $e->getLine());
             throw $e;
         }
     }
@@ -189,11 +189,11 @@ class WeCoza_Learners_Plugin {
             try {
                 require_once $file_path;
             } catch (Exception $e) {
-                error_log("WeCoza Learners Plugin: Error loading $description from $file_path: " . $e->getMessage());
+                // error_log("WeCoza Learners Plugin: Error loading $description from $file_path: " . $e->getMessage());
                 throw $e;
             }
         } else {
-            error_log("WeCoza Learners Plugin: File not found - $description at $file_path");
+            // error_log("WeCoza Learners Plugin: File not found - $description at $file_path");
             throw new Exception("Required file not found: $file_path");
         }
     }
@@ -217,8 +217,8 @@ class WeCoza_Learners_Plugin {
             
         } catch (Exception $e) {
             // Log the full error
-            error_log('WeCoza Learners Plugin: ACTIVATION FAILED - ' . $e->getMessage());
-            error_log('WeCoza Learners Plugin: Stack trace: ' . $e->getTraceAsString());
+            // error_log('WeCoza Learners Plugin: ACTIVATION FAILED - ' . $e->getMessage());
+            // error_log('WeCoza Learners Plugin: Stack trace: ' . $e->getTraceAsString());
             
             // Show user-friendly error message
             wp_die(
@@ -318,7 +318,7 @@ class WeCoza_Learners_Plugin {
         
         // Log warning if password is not set
         if (empty(get_option('wecoza_postgres_password'))) {
-            error_log('WeCoza Learners Plugin: Database password not configured. Please set the wecoza_postgres_password option in WordPress admin.');
+            // error_log('WeCoza Learners Plugin: Database password not configured. Please set the wecoza_postgres_password option in WordPress admin.');
         }
     }
     
@@ -423,7 +423,7 @@ class WeCoza_Learners_Plugin {
                 try {
                     $db->exec($sql);
                 } catch (Exception $e) {
-                    error_log("WeCoza Learners Plugin: Error creating table $table_name: " . $e->getMessage());
+                    // error_log("WeCoza Learners Plugin: Error creating table $table_name: " . $e->getMessage());
                     throw $e;
                 }
             }
@@ -442,13 +442,13 @@ class WeCoza_Learners_Plugin {
                 try {
                     $db->exec($index_sql);
                 } catch (Exception $e) {
-                    error_log("WeCoza Learners Plugin: Error creating index: " . $e->getMessage());
+                    // error_log("WeCoza Learners Plugin: Error creating index: " . $e->getMessage());
                     // Continue with other indexes even if one fails
                 }
             }
             
         } catch (Exception $e) {
-            error_log('WeCoza Learners Plugin: Error creating database tables: ' . $e->getMessage());
+            // error_log('WeCoza Learners Plugin: Error creating database tables: ' . $e->getMessage());
             throw $e;
         }
     }
@@ -473,7 +473,7 @@ function wecoza_learners() {
     try {
         return WeCoza_Learners_Plugin::instance();
     } catch (Exception $e) {
-        error_log('WeCoza Learners Plugin: Fatal error in main function: ' . $e->getMessage());
+        // error_log('WeCoza Learners Plugin: Fatal error in main function: ' . $e->getMessage());
         
         // Show admin notice if in admin context
         if (is_admin()) {
@@ -534,7 +534,7 @@ function wecoza_learners_deactivate_with_notice($message) {
 $requirement_errors = wecoza_learners_check_requirements();
 
 if (!empty($requirement_errors)) {
-    error_log('WeCoza Learners Plugin: Requirement errors found: ' . implode('; ', $requirement_errors));
+    // error_log('WeCoza Learners Plugin: Requirement errors found: ' . implode('; ', $requirement_errors));
     add_action('admin_init', function() use ($requirement_errors) {
         if (is_plugin_active(plugin_basename(__FILE__))) {
             wecoza_learners_deactivate_with_notice(implode('; ', $requirement_errors));
@@ -545,18 +545,18 @@ if (!empty($requirement_errors)) {
     try {
         wecoza_learners();
     } catch (Exception $e) {
-        error_log('WeCoza Learners Plugin: Exception during initialization: ' . $e->getMessage());
-        error_log('WeCoza Learners Plugin: Exception file: ' . $e->getFile());
-        error_log('WeCoza Learners Plugin: Exception line: ' . $e->getLine());
+        // error_log('WeCoza Learners Plugin: Exception during initialization: ' . $e->getMessage());
+        // error_log('WeCoza Learners Plugin: Exception file: ' . $e->getFile());
+        // error_log('WeCoza Learners Plugin: Exception line: ' . $e->getLine());
         add_action('admin_init', function() use ($e) {
             if (is_plugin_active(plugin_basename(__FILE__))) {
                 wecoza_learners_deactivate_with_notice($e->getMessage());
             }
         });
     } catch (Error $e) {
-        error_log('WeCoza Learners Plugin: Fatal PHP Error during initialization: ' . $e->getMessage());
-        error_log('WeCoza Learners Plugin: Fatal error file: ' . $e->getFile());
-        error_log('WeCoza Learners Plugin: Fatal error line: ' . $e->getLine());
+        // error_log('WeCoza Learners Plugin: Fatal PHP Error during initialization: ' . $e->getMessage());
+        // error_log('WeCoza Learners Plugin: Fatal error file: ' . $e->getFile());
+        // error_log('WeCoza Learners Plugin: Fatal error line: ' . $e->getLine());
         // Catch PHP 7+ fatal errors
         add_action('admin_init', function() use ($e) {
             if (is_plugin_active(plugin_basename(__FILE__))) {
