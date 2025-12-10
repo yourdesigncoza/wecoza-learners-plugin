@@ -68,23 +68,24 @@ if (!class_exists('WeCozaLearnersDB')) {
                 return;
             }
 
-            // Get PostgreSQL database credentials from WordPress options
-            $pgHost = get_option('wecoza_postgres_host', 'db-wecoza-3-do-user-17263152-0.m.db.ondigitalocean.com');
-            $pgPort = get_option('wecoza_postgres_port', '25060');
-            $pgName = get_option('wecoza_postgres_dbname', 'defaultdb');
-            $pgUser = get_option('wecoza_postgres_user', 'doadmin');
-            $pgPass = get_option('wecoza_postgres_password', '');
-            
+            $config = $this->getConfig();
+            $pgHost = $config['host'];
+            $pgPort = $config['port'];
+            $pgName = $config['dbname'];
+            $pgUser = $config['user'];
+            $pgPass = $config['password'];
+            $pgSchema = $config['schema'];
+
             // Check if password is configured
             if (empty($pgPass)) {
                 error_log('WeCoza Learners Plugin: PostgreSQL password not configured. Please set wecoza_postgres_password option.');
                 // Don't throw exception - just log and continue
                 return;
             }
-            
+
             // Create PDO instance for PostgreSQL - NO MySQL connections!
             $this->pdo = new PDO(
-                "pgsql:host=$pgHost;port=$pgPort;dbname=$pgName;sslmode=require",
+                "pgsql:host=$pgHost;port=$pgPort;dbname=$pgName;sslmode=require" . ($pgSchema ? ";options='-c search_path=$pgSchema'" : ''),
                 $pgUser,
                 $pgPass,
                 [
@@ -95,7 +96,7 @@ if (!class_exists('WeCozaLearnersDB')) {
             );
             
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('WeCoza Learners Plugin: PostgreSQL connection successful');
+                // error_log('WeCoza Learners Plugin: PostgreSQL connection successful');
             }
             
         } catch (PDOException $e) {
@@ -106,6 +107,34 @@ if (!class_exists('WeCozaLearnersDB')) {
             error_log('WeCoza Learners Plugin: Database connection error: ' . $e->getMessage());
             $this->pdo = null;
         }
+    }
+
+    /**
+     * Build PostgreSQL connection configuration from WordPress options
+     *
+     * @return array
+     */
+    private function getConfig() {
+        $host = get_option('wecoza_postgres_host', '');
+        $portValue = get_option('wecoza_postgres_port', '');
+        $dbname = get_option('wecoza_postgres_dbname', '');
+        $user = get_option('wecoza_postgres_user', '');
+        $password = get_option('wecoza_postgres_password', '');
+        $schema = get_option('wecoza_postgres_schema', 'public');
+
+        $port = (int) $portValue;
+        if ($port <= 0) {
+            $port = 5432;
+        }
+
+        return [
+            'host' => $host,
+            'port' => $port,
+            'dbname' => $dbname,
+            'user' => $user,
+            'password' => $password,
+            'schema' => $schema !== '' ? $schema : 'public',
+        ];
     }
     
     /**
@@ -234,15 +263,15 @@ if (!class_exists('WeCozaLearnersDB')) {
      *
      * @return bool
      */
-    public function testConnection() {
-        try {
-            $stmt = $this->pdo->query('SELECT 1');
-            return $stmt !== false;
-        } catch (Exception $e) {
-            error_log('WeCoza Learners Plugin: Database connection test failed: ' . $e->getMessage());
-            return false;
-        }
-    }
+    // public function testConnection() {
+    //     try {
+    //         $stmt = $this->pdo->query('SELECT 1');
+    //         return $stmt !== false;
+    //     } catch (Exception $e) {
+    //         error_log('WeCoza Learners Plugin: Database connection test failed: ' . $e->getMessage());
+    //         return false;
+    //     }
+    // }
     
     /**
      * Check if table exists

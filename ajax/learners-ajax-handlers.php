@@ -164,24 +164,24 @@ function fetch_learners_data() {
     }
 
     try {
-        error_log('WeCoza Learners: Starting fetch_learners_data');
+        // error_log('WeCoza Learners: Starting fetch_learners_data');
         
         $db = new learner_DB();
         $learners = $db->get_learners_mappings();
 
-        error_log('WeCoza Learners: Retrieved ' . count($learners) . ' learners');
+        // error_log('WeCoza Learners: Retrieved ' . count($learners) . ' learners');
 
         if (empty($learners)) {
-            error_log('WeCoza Learners: No learners found in database');
+            // error_log('WeCoza Learners: No learners found in database');
             throw new Exception('No learners found.');
         }
 
         $rows = generate_learner_table_rows($learners);
-        error_log('WeCoza Learners: Successfully generated table rows');
+        // error_log('WeCoza Learners: Successfully generated table rows');
         wp_send_json_success($rows);
 
     } catch (Exception $e) {
-        error_log('WeCoza Learners: Error in fetch_learners_data - ' . $e->getMessage());
+        // error_log('WeCoza Learners: Error in fetch_learners_data - ' . $e->getMessage());
         wp_send_json_error($e->getMessage());
     }
 }

@@ -260,13 +260,13 @@ public function get_learners_mappings() {
     $cached_results = get_transient( 'learner_db_get_learners_mappings' );
 
     if ($cached_results !== false) {
-        error_log('WeCoza Learners DB: Returning cached results (' . count($cached_results) . ' learners)');
+        // error_log('WeCoza Learners DB: Returning cached results (' . count($cached_results) . ' learners)');
         return $cached_results;
     }
 
     try {
         $db = $this->db->getPdo();
-        error_log('WeCoza Learners DB: Database connection established');
+        // error_log('WeCoza Learners DB: Database connection established');
     } catch (Exception $e) {
         error_log('WeCoza Learners DB: Failed to get database connection - ' . $e->getMessage());
         throw new Exception('Database connection failed: ' . $e->getMessage());
@@ -311,12 +311,12 @@ $query = "
 
 
     try {
-        error_log('WeCoza Learners DB: Executing learners mappings query');
+        // error_log('WeCoza Learners DB: Executing learners mappings query');
         $lrner = $db->prepare($query);
         $lrner->execute();
 
         $results = $lrner->fetchAll(PDO::FETCH_OBJ);
-        error_log('WeCoza Learners DB: Query executed successfully, retrieved ' . count($results) . ' raw results');
+        // error_log('WeCoza Learners DB: Query executed successfully, retrieved ' . count($results) . ' raw results');
 
         // Process portfolio details for each learner
         foreach ($results as $learner) {
@@ -342,7 +342,7 @@ $query = "
 
         // Store the results in a transient valid 12 hours
         set_transient( 'learner_db_get_learners_mappings', $results, 12 * HOUR_IN_SECONDS );
-        error_log('WeCoza Learners DB: Results cached, returning ' . count($results) . ' processed learners');
+        // error_log('WeCoza Learners DB: Results cached, returning ' . count($results) . ' processed learners');
 
         return $results;
 

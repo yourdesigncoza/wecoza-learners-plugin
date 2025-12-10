@@ -9,39 +9,6 @@
  */
 
 /* ==========================================================================
-   Learner Forms
-   ========================================================================== */
-
-/* Learner capture form styles */
-.wecoza-learner-form {
-    /* Form container styles */
-}
-
-/* Learner display table styles */
-.learners-table {
-    /* Table styles */
-}
-
-/* Learner detail modal styles */
-.learner-detail-modal {
-    /* Modal styles */
-}
-
-/* ==========================================================================
-   Learner Components
-   ========================================================================== */
-
-/* Portfolio upload styles */
-.portfolio-upload {
-    /* Upload area styles */
-}
-
-/* Assessment styles */
-.learner-assessment {
-    /* Assessment display styles */
-}
-
-/* ==========================================================================
    Note Categories (from ydcoza-styles.css)
    ========================================================================== */
 
@@ -58,16 +25,4 @@
 .note-category-learners-too-fast {
     background-color: #e8f5e9;
     border-left: 4px solid #4caf50;
-}
-
-/* ==========================================================================
-   Responsive Styles
-   ========================================================================== */
-
-@media (max-width: 768px) {
-    /* Mobile styles */
-}
-
-@media (max-width: 992px) {
-    /* Tablet styles */
 }
